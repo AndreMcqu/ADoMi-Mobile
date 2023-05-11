@@ -1,5 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native'
 import axios from 'axios'
+import FormulaireAppointment from '../components/cancelAppointmentForm'
 
 
 
@@ -18,6 +19,7 @@ export default function AppointmentCancel (){
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Annuler ce rendez-vous ?</Text>
+            <FormulaireAppointment></FormulaireAppointment>
         </View>
     )
 }
@@ -25,7 +27,7 @@ export default function AppointmentCancel (){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'pink',
+        backgroundColor: 'lightskyblue',
         alignItems: 'center',
         paddingTop: 70,
 
