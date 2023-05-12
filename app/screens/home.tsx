@@ -20,7 +20,7 @@ export default function Home (){
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Bonjour</Text>
+            <Text style={styles.title}>Aloha</Text>
         </View>
     )
 }
@@ -40,4 +40,3 @@ const styles = StyleSheet.create({
     }
 
 })
-
