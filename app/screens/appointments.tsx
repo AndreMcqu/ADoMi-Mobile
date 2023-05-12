@@ -4,6 +4,8 @@ import AllAppointments from "../components/appointmentComponents/allAppointments
 import DisplayModal from "../components/appointmentComponents/appointmentModal"
 import { useState, useEffect } from "react";
 import axios from "axios";
+import moment from "moment";
+import 'moment/locale/fr';
 
 export default function Appointments(){
 
@@ -22,7 +24,6 @@ export default function Appointments(){
 
         axios.get(url)
         .then((response) =>{
-
             const data = response.data;
             setAppointmentInfo(data);
             
@@ -39,7 +40,6 @@ export default function Appointments(){
 
         setselectedAppointment(item)
         setIsModalVisible(true)
-
     }
 
     const onModalClose = ()=>{
@@ -61,6 +61,11 @@ export default function Appointments(){
             postCode: selectedAppointment.postCode,
             city: selectedAppointment.city,
         } : null
+    
+    //Conversion des dates et heures au format fr
+    const appointmentDate = moment(selectedAppointment?.date).format('DD MMMM YYYY');
+    const startHour = moment(selectedAppointment?.startHour, "HH:mm:ss");
+    const endHour = moment(selectedAppointment?.endHour, "HH:mm:ss");
 
     return(
         <View style={styles.appointmentContainer}>
@@ -80,8 +85,7 @@ export default function Appointments(){
                                 }
                 />
                 
-
-                <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={selectedAppointment?.date} startHour={selectedAppointment?.startHour} endHour={selectedAppointment?.endHour} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetName} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city}/>
+                <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH:mm")} endHour={endHour.format("HH:mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetName} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client}/>
             </View>
             <View style={styles.bottomLine}/>
     
