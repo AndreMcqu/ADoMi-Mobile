@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet} from 'react-native'
 import axios from 'axios'
-import FormulaireAppointment from '../components/cancelAppointmentForm'
+import FormulaireAppointment from '../components/appointmentComponents/cancelAppointmentForm'
 
 
 
