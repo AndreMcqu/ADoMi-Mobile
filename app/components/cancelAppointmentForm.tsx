@@ -1,24 +1,27 @@
 
-import React ,{useState} from 'react';
+import React ,{ChangeEvent, SyntheticEvent, useState} from 'react';
 import { Button, StyleSheet, Alert, Pressable, TextInput } from 'react-native';
 
 import { Text, View } from 'react-native';
 
 export default function FormulaireAppointment(): JSX.Element {
 
-    const [text, onChangeText] = React.useState('Useless Text');
+    const [input, setInput] = React.useState('');
+
+    const sendInput = () => {
+        //imaginer un envoi de mail
+    }
 
     return(
         <View style={styles.formulaire}>
             <TextInput
                 style={styles.input}
-                onChangeText={onChangeText}
+                onChangeText={(value)=>{setInput(value)}}
                 placeholder="Raison de l'annulation"
-                value={text}
             />
-            <Pressable  style={styles.pressableButton}>
-                    <Text style={styles.textButton}>Confirmer</Text>
-                </Pressable>
+            <Pressable  style={styles.pressableButton} onPress={sendInput}>
+                <Text style={styles.textButton}>Confirmer</Text>
+            </Pressable>
         </View>
     )
 }
