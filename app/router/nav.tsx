@@ -1,7 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import Home from '../screens/home'
+import Calendar from '../screens/Calendar';
 import { Ionicons } from '@expo/vector-icons'; 
+
 
 const Tab = createBottomTabNavigator()
 
@@ -17,6 +19,7 @@ export default function Nav(){
     return (
         <Tab.Navigator backBehavior="firstRoute" screenOptions={{headerShown: false}}>
             <Tab.Screen name='home' options={screenOptions.home} component={Home}/>
+            <Tab.Screen name='calendr' options={screenOptions.Calendar} component={Calendar}/>
         </Tab.Navigator>
     )
 }
