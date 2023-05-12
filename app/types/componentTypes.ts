@@ -9,6 +9,7 @@ export type AppointmentType = {
     postCode: string
     city: string,
     mission: {
+        client:Client
         idClient?: number
         idReccurence?: number
     }
@@ -19,30 +20,28 @@ export type ItemProps = {
 }
 
 export type AppointmentProps = {
+    id?: number;
+    idMission?: number;
+    isVisible?: boolean;
+    onClose?: any;
+    date?: string;
+    startHour?: string;
+    endHour?: string;
+    streetName?: string;
+    streetNumber?: string;
+    postCode?: string;
+    city?: string;
+    client?: Client;
 
-    id: number;
-    idMission: number;
-    date: string;
-    startHour: string;
-    endHour: string;
-    streetName: string;
-    streetNumber: string;
-    postCode: string;
-    city: string;
-    
 }
 
-export type DisplayModalProps = {
-    id: number | undefined;
-    idMission: number | undefined;
-    isVisible: boolean;
-    onClose: any;
-    date: string | undefined;
-    startHour: string | undefined;
-    endHour: string | undefined;
-    streetName: string | undefined;
-    streetNumber: string | undefined;
-    postCode: string | undefined;
-    city: string | undefined;
-
+export type Client = {
+    first_name: string, 
+    last_name: string, 
+    email: string, 
+    phone: string, 
+    street_number: string, 
+    street_name: string, 
+    post_code: string, 
+    city: string, 
 }

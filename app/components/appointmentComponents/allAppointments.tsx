@@ -12,13 +12,6 @@ export default function AllAppointments(appointment: AppointmentType){
 
         <View style={styles.bouttonRdv}>
             <Text style={styles.appointmentText}>{appointmentDate}</Text>
-
-            <FontAwesome
-                name="search"
-                size={18}
-                color="#25292e"
-                style={styles.searchIcon}
-            />
         </View>
 
     )
@@ -31,7 +24,7 @@ export default function AllAppointments(appointment: AppointmentType){
         alignItems: "center",
         marginVertical:10,
         padding:10,
-        backgroundColor: "beige",
+        backgroundColor: "#99e6ff",
         minWidth: 225,
         borderRadius: 8
     },

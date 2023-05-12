@@ -1,20 +1,20 @@
 import { View, Modal, Text, StyleSheet, Pressable} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import EditButton from "./editButton";
-import { DisplayModalProps } from "../../types/componentTypes";
+import { AppointmentProps } from "../../types/componentTypes";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import 'moment/locale/fr';
 
-export default function displayModal(props:DisplayModalProps){   
+export default function displayModal(props:AppointmentProps){   
 
-    const appointmentDate = moment(props.date).format('DD MMMM YYYY');
-    const startHour = moment(props.startHour, "HH:mm:ss");
-    const endHour = moment(props.endHour, "HH:mm:ss");
+    // const appointmentDate = moment(props.date).format('DD MMMM YYYY');
+    // const startHour = moment(props.startHour, "HH:mm:ss");
+    // const endHour = moment(props.endHour, "HH:mm:ss");
     const [editMode, setEditMode] = useState<boolean>(false);
 
     const editAppointment = ()=>{
-        alert('fonction modif en construction');
+        alert("Renverra un objet rdv au component chargé de l'annulation");
         setEditMode(true);
     };
 
@@ -25,14 +25,23 @@ export default function displayModal(props:DisplayModalProps){
             <View style={styles.modalContent}>
 
                 <Pressable onPress={props.onClose} style={styles.closeButton}>
-                    <FontAwesome name="close" color="#fff" size={30} />
+                    <FontAwesome name="close" color="#006080" size={30} />
                 </Pressable>
 
                 <View style={styles.infosContainer}>
 
                     <Text>
+                        <Text style={styles.infoLabel}>- Client : </Text> 
+                        <Text>{props.client?.first_name} {props.client?.last_name}</Text>
+                    </Text>
+                    
+                </View>
+
+                <View style={styles.infosContainer}>
+
+                    <Text>
                         <Text style={styles.infoLabel}>- Date : </Text> 
-                        <Text>Le {appointmentDate}</Text>
+                        <Text>Le {props.date}</Text>
                     </Text>
                     
                 </View>
@@ -41,7 +50,7 @@ export default function displayModal(props:DisplayModalProps){
 
                     <Text>
                         <Text style={styles.infoLabel}>- Horaire : </Text> 
-                        <Text>De {startHour.format("HH:mm")} à {endHour.format("HH:mm")}</Text>
+                        <Text>De {props.startHour} à {props.endHour}</Text>
                     </Text>
 
                 </View>
@@ -63,10 +72,7 @@ export default function displayModal(props:DisplayModalProps){
                     </Text>
 
                 </View>
-
-
-
-                
+                 
                 <EditButton buttonFunction={editAppointment}/>
 
             </View>
@@ -82,8 +88,10 @@ const styles = StyleSheet.create({
         alignItems:"flex-start",
         padding: 10,
         width: '90%',
-        backgroundColor: '#a2a8b0',
+        backgroundColor: '#e6f9ff',
         borderRadius: 18,
+        borderColor:"#006080",
+        borderWidth:3,
         position: 'absolute',
         top: 200,
         left:20
@@ -94,7 +102,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         paddingLeft: 5,
-        marginBottom:2
+        marginBottom:3
     },
     infoLabel:{
         fontWeight:"bold",

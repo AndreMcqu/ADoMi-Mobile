@@ -2,11 +2,20 @@ import { StyleSheet, Text, View, FlatList, Pressable} from "react-native";
 import { AppointmentType } from "../types/componentTypes";
 import AllAppointments from "../components/appointmentComponents/allAppointments";
 import DisplayModal from "../components/appointmentComponents/appointmentModal"
+import type { StackScreenProps } from '@react-navigation/stack';
+import type { CalendarStackParamList } from '../router/StackNavCalendar';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import moment from "moment";
+import 'moment/locale/fr';
 
-export default function Appointments(){
 
+type props = StackScreenProps<CalendarStackParamList, 'Appointment'>
+
+
+export default function Appointments({route, navigation}: props){
+
+    const carerId = route.params.carerId
     //appointmentData contiendra toutes les données appointments d'un carer
     const [appointmentData, setAppointmentInfo] = useState<AppointmentType[]>();
 
@@ -16,13 +25,12 @@ export default function Appointments(){
     const [selectedAppointment, setselectedAppointment] = useState<AppointmentType>();
 
     //url en dur pour effectuer des tests
-    const url = "https://3428-31-32-43-205.ngrok-free.app/carers/3/appointments"
+    const url = "https://b1b8-31-32-43-205.ngrok-free.app/carers/3/appointments"
 
     const fetchAppointmentInfo = ()=>{
 
         axios.get(url)
         .then((response) =>{
-
             const data = response.data;
             setAppointmentInfo(data);
             
@@ -39,7 +47,6 @@ export default function Appointments(){
 
         setselectedAppointment(item)
         setIsModalVisible(true)
-
     }
 
     const onModalClose = ()=>{
@@ -61,36 +68,66 @@ export default function Appointments(){
             postCode: selectedAppointment.postCode,
             city: selectedAppointment.city,
         } : null
-
-    return(
-        <View style={styles.appointmentContainer}>
-
-            <View style={styles.subContainer}>
-
-                <Text style={styles.title}>Liste de vos rendez-vous</Text>
-
-                <FlatList 
-
-                    data={appointmentData}
-                    renderItem={({item}) => <Pressable onPress={()=>onModalOpen(item)} key={item.id}>
-                                                <AllAppointments {...item}/>
-                                            </Pressable>
-                                }
-                />
-                
-
-                <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={selectedAppointment?.date} startHour={selectedAppointment?.startHour} endHour={selectedAppointment?.endHour} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetName} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city}/>
-            </View>
-            <View style={styles.bottomLine}/>
     
-        </View>
-    )
+    //Conversion des dates et heures au format fr
+    const appointmentDate = moment(selectedAppointment?.date).format('DD MMMM YYYY');
+    const startHour = moment(selectedAppointment?.startHour, "HH:mm:ss");
+    const endHour = moment(selectedAppointment?.endHour, "HH:mm:ss");
+
+    if(appointmentData?.length === 0){
+
+        return(
+
+            <View style={styles.appointmentContainer}>
+        
+                <View style={styles.subContainer}>
+
+                    <Text style={styles.title}>A - DO - MI</Text>
+
+                    <Text style={styles.subtitle}>Vous n'avez aucun rendez-vous prévu</Text>
+                    
+                </View>
+
+            </View>
+
+        )
+
+    }
+    else{
+
+        return(
+
+            <View style={styles.appointmentContainer}>
+    
+                <View style={styles.subContainer}>
+    
+                    <Text style={styles.title}>A - DO - MI</Text>
+    
+                    <Text style={styles.subtitle}>Vos prochains rendez-vous :</Text>
+    
+                    <FlatList 
+    
+                        data={appointmentData}
+                        renderItem={({item}) => <Pressable onPress={()=>onModalOpen(item)} key={item.id}>
+                                                    <AllAppointments {...item}/>
+                                                </Pressable>
+                                    }
+                    />
+                    
+                    <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH:mm")} endHour={endHour.format("HH:mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetNumber} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client}/>
+                </View>
+                <View style={styles.bottomLine}/>
+        
+            </View>
+        )
+
+    }
+    
 }
 
 const styles = StyleSheet.create({
     appointmentContainer: {
         flex: 1,
-        backgroundColor: "#e4f0ec",
         justifyContent: "center",
         alignItems: "center", 
         padding: 5
@@ -102,14 +139,13 @@ const styles = StyleSheet.create({
 
     },
     title:{
-        color: "white",
-        backgroundColor: "#94A7AF",
-        fontSize:25,
-        borderWidth: 3,
-        borderColor: "#3E4C52",
-        borderRadius: 8,
-        padding: 10,
-        marginBottom: 5
+        fontSize:35,
+        marginBottom: 15
+    },
+    subtitle:{
+        fontSize:18,
+        marginBottom: 20
+
     },
     buttonContainer:{
         flexDirection: "row",
@@ -124,6 +160,6 @@ const styles = StyleSheet.create({
     bottomLine:{
         width: "70%",
         borderWidth: 0.7,
-        borderColor: "grey"
+        borderColor: "#006080"
     }
 })
