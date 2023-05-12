@@ -1,3 +1,8 @@
+export type Client = {
+    first_name?: string
+    last_name?: string
+}
+
 export type AppointmentType = {
     id?: number
     idMission: number
@@ -16,7 +21,7 @@ export type AppointmentType = {
 }
 
 export type ItemProps = {
-    id : number | undefined
+    id : number | undefined;
 }
 
 export type AppointmentProps = {
@@ -32,16 +37,4 @@ export type AppointmentProps = {
     postCode?: string;
     city?: string;
     client?: Client;
-
-}
-
-export type Client = {
-    first_name: string, 
-    last_name: string, 
-    email: string, 
-    phone: string, 
-    street_number: string, 
-    street_name: string, 
-    post_code: string, 
-    city: string, 
 }
