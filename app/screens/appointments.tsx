@@ -67,30 +67,55 @@ export default function Appointments(){
     const startHour = moment(selectedAppointment?.startHour, "HH:mm:ss");
     const endHour = moment(selectedAppointment?.endHour, "HH:mm:ss");
 
-    return(
-        <View style={styles.appointmentContainer}>
+    if(appointmentData?.length === 0){
 
-            <View style={styles.subContainer}>
+        return(
 
-                <Text style={styles.title}>A - DO - MI</Text>
+            <View style={styles.appointmentContainer}>
+        
+                <View style={styles.subContainer}>
 
-                <Text style={styles.subtitle}>Vos prochains rendez-vous :</Text>
+                    <Text style={styles.title}>A - DO - MI</Text>
 
-                <FlatList 
+                    <Text style={styles.subtitle}>Vous n'avez aucun rendez-vous prévu</Text>
+                    
+                </View>
 
-                    data={appointmentData}
-                    renderItem={({item}) => <Pressable onPress={()=>onModalOpen(item)} key={item.id}>
-                                                <AllAppointments {...item}/>
-                                            </Pressable>
-                                }
-                />
-                
-                <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH:mm")} endHour={endHour.format("HH:mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetName} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client}/>
             </View>
-            <View style={styles.bottomLine}/>
+
+        )
+        
+    }
+    else{
+
+        return(
+
+            <View style={styles.appointmentContainer}>
     
-        </View>
-    )
+                <View style={styles.subContainer}>
+    
+                    <Text style={styles.title}>A - DO - MI</Text>
+    
+                    <Text style={styles.subtitle}>Vos prochains rendez-vous :</Text>
+    
+                    <FlatList 
+    
+                        data={appointmentData}
+                        renderItem={({item}) => <Pressable onPress={()=>onModalOpen(item)} key={item.id}>
+                                                    <AllAppointments {...item}/>
+                                                </Pressable>
+                                    }
+                    />
+                    
+                    <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH:mm")} endHour={endHour.format("HH:mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetName} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client}/>
+                </View>
+                <View style={styles.bottomLine}/>
+        
+            </View>
+        )
+
+    }
+    
 }
 
 const styles = StyleSheet.create({
