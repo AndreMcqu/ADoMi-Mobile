@@ -2,13 +2,20 @@ import { StyleSheet, Text, View, FlatList, Pressable} from "react-native";
 import { AppointmentType } from "../types/componentTypes";
 import AllAppointments from "../components/appointmentComponents/allAppointments";
 import DisplayModal from "../components/appointmentComponents/appointmentModal"
+import type { StackScreenProps } from '@react-navigation/stack';
+import type { CalendarStackParamList } from '../router/StackNavCalendar';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import 'moment/locale/fr';
 
-export default function Appointments(){
 
+type props = StackScreenProps<CalendarStackParamList, 'Appointment'>
+
+
+export default function Appointments({route, navigation}: props){
+
+    const carerId = route.params.carerId
     //appointmentData contiendra toutes les données appointments d'un carer
     const [appointmentData, setAppointmentInfo] = useState<AppointmentType[]>();
 
