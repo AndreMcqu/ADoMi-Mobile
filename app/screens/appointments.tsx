@@ -84,7 +84,7 @@ export default function Appointments(){
             </View>
 
         )
-        
+
     }
     else{
 
@@ -107,7 +107,7 @@ export default function Appointments(){
                                     }
                     />
                     
-                    <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH:mm")} endHour={endHour.format("HH:mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetName} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client}/>
+                    <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH:mm")} endHour={endHour.format("HH:mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetNumber} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client}/>
                 </View>
                 <View style={styles.bottomLine}/>
         

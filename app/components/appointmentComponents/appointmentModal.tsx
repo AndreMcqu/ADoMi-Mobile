@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
         paddingLeft: 5,
-        marginBottom:2
+        marginBottom:3
     },
     infoLabel:{
         fontWeight:"bold",
