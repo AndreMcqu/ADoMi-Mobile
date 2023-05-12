@@ -16,7 +16,7 @@ export default function Appointments(){
     const [selectedAppointment, setselectedAppointment] = useState<AppointmentType>();
 
     //url en dur pour effectuer des tests
-    const url = "https://3428-31-32-43-205.ngrok-free.app/carers/3/appointments"
+    const url = "https://b1b8-31-32-43-205.ngrok-free.app/carers/3/appointments"
 
     const fetchAppointmentInfo = ()=>{
 
@@ -67,7 +67,9 @@ export default function Appointments(){
 
             <View style={styles.subContainer}>
 
-                <Text style={styles.title}>Liste de vos rendez-vous</Text>
+                <Text style={styles.title}>A - DO - MI</Text>
+
+                <Text style={styles.subtitle}>Vos prochains rendez-vous :</Text>
 
                 <FlatList 
 
@@ -90,7 +92,6 @@ export default function Appointments(){
 const styles = StyleSheet.create({
     appointmentContainer: {
         flex: 1,
-        backgroundColor: "#e4f0ec",
         justifyContent: "center",
         alignItems: "center", 
         padding: 5
@@ -102,14 +103,13 @@ const styles = StyleSheet.create({
 
     },
     title:{
-        color: "white",
-        backgroundColor: "#94A7AF",
-        fontSize:25,
-        borderWidth: 3,
-        borderColor: "#3E4C52",
-        borderRadius: 8,
-        padding: 10,
-        marginBottom: 5
+        fontSize:35,
+        marginBottom: 15
+    },
+    subtitle:{
+        fontSize:18,
+        marginBottom: 20
+
     },
     buttonContainer:{
         flexDirection: "row",
@@ -124,6 +124,6 @@ const styles = StyleSheet.create({
     bottomLine:{
         width: "70%",
         borderWidth: 0.7,
-        borderColor: "grey"
+        borderColor: "#006080"
     }
 })

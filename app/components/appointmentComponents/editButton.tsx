@@ -1,5 +1,6 @@
 import { Pressable, Text, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { Link } from "@react-navigation/native";
 
 export default function editButton({buttonFunction}:any){
     
@@ -9,12 +10,11 @@ export default function editButton({buttonFunction}:any){
             <FontAwesome
                 name="pencil"
                 size={18}
-                color="#25292e"
                 label= "Détails"
                 style={styles.editIcon}
 
             />
-            <Text>Modifier</Text>
+        <Text style={styles.editText}>Modifier</Text>
 
         </Pressable>
     )
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     editButton:{
         flexDirection:"row",
         justifyContent:"center",
-        backgroundColor: "#faf9e6",
+        backgroundColor: "#006080",
         width:"50%",
         marginLeft:75,
         marginTop:10,
@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
     },
     editIcon:{
         marginRight:10,
-        color:"#74A9C1"
+        color:"white"
+    },
+    editText:{
+        color: "white"
     }
 })

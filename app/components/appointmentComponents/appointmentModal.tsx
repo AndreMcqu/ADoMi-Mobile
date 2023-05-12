@@ -25,7 +25,7 @@ export default function displayModal(props:DisplayModalProps){
             <View style={styles.modalContent}>
 
                 <Pressable onPress={props.onClose} style={styles.closeButton}>
-                    <FontAwesome name="close" color="#fff" size={30} />
+                    <FontAwesome name="close" color="#006080" size={30} />
                 </Pressable>
 
                 <View style={styles.infosContainer}>
@@ -63,10 +63,7 @@ export default function displayModal(props:DisplayModalProps){
                     </Text>
 
                 </View>
-
-
-
-                
+                 
                 <EditButton buttonFunction={editAppointment}/>
 
             </View>
@@ -82,8 +79,10 @@ const styles = StyleSheet.create({
         alignItems:"flex-start",
         padding: 10,
         width: '90%',
-        backgroundColor: '#a2a8b0',
+        backgroundColor: '#e6f9ff',
         borderRadius: 18,
+        borderColor:"#006080",
+        borderWidth:3,
         position: 'absolute',
         top: 200,
         left:20
