@@ -1,22 +1,28 @@
 import { View, Modal, Text, StyleSheet, Pressable} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import EditButton from "./editButton";
+import CancelButton from "./cancelButton";
 import { AppointmentProps } from "../../types/componentTypes";
-import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import 'moment/locale/fr';
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParamList } from "../../router/StackNavHome";
+import { useState } from "react";
 
-export default function displayModal(props:AppointmentProps){   
+export default function displayModal(props:AppointmentProps){  
+
+    // const navigation = useNavigation<StackNavigationProp<HomeStackParamList, "Appointment">>();
 
     // const appointmentDate = moment(props.date).format('DD MMMM YYYY');
     // const startHour = moment(props.startHour, "HH:mm:ss");
     // const endHour = moment(props.endHour, "HH:mm:ss");
-    const [editMode, setEditMode] = useState<boolean>(false);
 
-    const editAppointment = ()=>{
-        alert("Renverra un objet rdv au component chargé de l'annulation");
-        setEditMode(true);
-    };
+    // const cancelAppointment = ()=>{
+
+    //     //La navigation ne fonctionne plus lorqu'on utilise la flèche de retour (goback()). Probablement parce que la fonction goBack() entre en conflit avec les éléments de type modal
+    //     navigation.navigate('Unavailable', {carerId: 3});
+
+    // };
 
     return (
 
@@ -73,7 +79,7 @@ export default function displayModal(props:AppointmentProps){
 
                 </View>
                  
-                <EditButton buttonFunction={editAppointment}/>
+                <CancelButton cancelFunction={props.cancelFunction}/>
 
             </View>
 
