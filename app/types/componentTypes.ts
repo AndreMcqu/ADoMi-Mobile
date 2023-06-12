@@ -14,7 +14,7 @@ export type AppointmentType = {
     postCode: string
     city: string,
     mission: {
-        client:Client
+        client?: Client
         idClient?: number
         idReccurence?: number
     }

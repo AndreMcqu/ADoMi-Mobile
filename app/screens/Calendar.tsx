@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda, AgendaEntry, AgendaSchedule } from 'react-native-calendars'
 import type { StackScreenProps } from '@react-navigation/stack';
-import type { CalendarStackParamList } from '../router/StackNavCalendar';
+import type { CalendarStackParamList, } from '../router/StackNavCalendar';
+import type { AppointmentType } from '../types/componentTypes'
 import moment from 'moment';
 
 type props = StackScreenProps<CalendarStackParamList, 'Calendar'>
@@ -13,17 +14,8 @@ interface Appointment {
   date: string;
 }
 
-const appointmentExemple = [
-  {
-    city: "Versailles", date: "2023-02-14T11:00:00.000Z", endHour: '15:00:00', id: 1, idMission: 1, mission: { idClient: 1, idRecurence: 1 }
-    , postCode: "78000", startHour: "14:00:00", streetName: "Rue Jean Jaures", streetNumber: 2
-  },
-  {
-  "city": "Versailles", "date": "2023-02-21T11:00:00.000Z", "endHour": "17:00:00", "id": 2, "idMission": 2, "mission": { "idClient": 1, "idRecurence": 2}
-  , "postCode": "78000", "startHour": "16:00:00", "streetName": "rue Albert Camus", "streetNumber": 25
-  }
-]
 
+/*
 const entries1: AgendaEntry[] = [
   {
     name: 'John Doe',
@@ -48,13 +40,44 @@ const schedule: AgendaSchedule = {
   '2023-05-01': entries1,
   '2023-05-05': entries2
 }
+*/
 
+const appointmentExample = [
+  {
+    city: "Versailles", date: "2023-06-14T11:00:00.000Z", endHour: '15:00:00', id: 1, idMission: 1, mission: { idClient: 1, idRecurence: 1 }
+    , postCode: "78000", startHour: "14:00:00", streetName: "Rue Jean Jaures", streetNumber: "2"
+  },
+  {
+    city: "Versailles", date: "2023-06-13T11:00:00.000Z", endHour: "17:00:00", id: 2, idMission: 2, mission: { idClient: 1, idRecurence: 2}
+    , postCode: "78000", startHour: "16:00:00", streetName: "rue Albert Camus", streetNumber: "25"
+  },
+  {
+    city: "Versailles", date: "2023-06-15T11:00:00.000Z", endHour: "17:00:00", id: 2, idMission: 2, mission: { idClient: 1, idRecurence: 2}
+    , postCode: "78000", startHour: "16:00:00", streetName: "rue Albert Camus", streetNumber: "25"
+  }
+]
 
+const getDates = (apptList: Partial<AppointmentType>[]) => {
+  let apptDates: {[key: string]: {selected: boolean, selectedColor: string}} = {}
+  apptList.forEach(appt => {
+    apptDates[moment(appt.date).format('YYYY-MM-DD')] = {selected: true, selectedColor: 'pink'}
+  })
+  return apptDates
+}
+const allMarkedDates = getDates(appointmentExample)
+//console.warn(allMarkedDates)
 
 export default function MyCalendar ({route, navigation}: props ) {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
-  
+    
+  const onDayPress = (day: any) => {
+    console.log(day);
+    setSelectedDate(day.dateString);
+  }
+
+
+/*
   useEffect(() => {
     fetchAppointments();
   }, []);
@@ -68,37 +91,46 @@ export default function MyCalendar ({route, navigation}: props ) {
       console.error('Error fetching appointments:', error);
     }
   };
-
+*/
   const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
     return <Text style={{fontSize: 50}}> NOM DU CLIENT </Text>
   }
 
-  const onDayPress = (day: any) => {
-
-    setSelectedDate(day.dateString);
-  }
 
 
   /* VIEW */
   return (
     <View style={s.container}>
       <Text style={s.title}>Calendrier</Text>
+
       <View style={s.calendarContainer}>
         <Calendar style={{paddingBottom: 18}}
-          markedDates={{
-            [selectedDate]: { selected: true, selectedColor: 'pink' },
-          }}
+          markedDates={allMarkedDates}
           onDayPress={onDayPress}
         />
-        <Agenda
-          theme={{
-            calendarBackground: 'red'
-          }}
-          selected={'2023-05-01'}
-          items={schedule}
-          renderItem={renderItem}
-          renderEmptyData={() => <Text>No appointments found</Text>}
-        />
+        <View style={{
+          backgroundColor: 'lightgrey', 
+          position: 'absolute',
+          top 
+          borderRadius: 10,
+          zIndex:10, 
+          padding: 120,
+          }}>
+
+          </View>
+        {
+        /*
+          <Agenda
+            theme={{
+              calendarBackground: 'red'
+            }}
+            selected={'2023-05-01'}
+            items={schedule}
+            renderItem={renderItem}
+            renderEmptyData={() => <Text>No appointments found</Text>}
+          />
+        */
+        }
       </View>
 
       <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Appointment', {carerId: 3})}>
