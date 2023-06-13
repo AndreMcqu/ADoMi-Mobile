@@ -1,5 +1,6 @@
-import React ,{ChangeEvent, SyntheticEvent, useState} from 'react';
+import React ,{ChangeEvent, SyntheticEvent, useState, useEffect} from 'react';
 import { Button, StyleSheet, Alert, Pressable, TextInput } from 'react-native';
+import sendEmail from './sendEmail';
 
 import { Text, View } from 'react-native';
 
@@ -7,8 +8,31 @@ export default function FormulaireAppointment(): JSX.Element {
 
     const [input, setInput] = React.useState('');
 
-    const sendInput = () => {
+    const sendInput = async () => {
+        
         //imaginer un envoi de mail
+        if(input){
+
+            console.log(input);
+
+            sendEmail(
+                'konomoha@hotmail.fr',
+                'Annulation de rendez-vous',
+                input,
+                'andre@ironman.com; theo@rouille.fr; lucas@linux.gmail'
+            ).then(() => {
+                console.log('Message envoyé!');
+            }).catch((err)=>{
+                console.log(err);
+                
+            });
+
+        }
+        else{
+
+            alert('Veuillez saisir un corps de message !')
+        }
+
     }
 
     return(
@@ -39,13 +63,16 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     textButton:{
+        backgroundColor: "#FFC0CB",
         borderWidth:1,
         borderRadius:5,
         padding:10,
         textAlign:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        fontWeight: "bold"
     },
     input:{
+        backgroundColor:"#edf2f7",
         textAlign:'center',
         height: 200,
         width:'80%',

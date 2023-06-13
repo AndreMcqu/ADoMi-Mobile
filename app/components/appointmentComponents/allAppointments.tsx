@@ -20,7 +20,7 @@ export default function AllAppointments(appointment: AppointmentType){
   const styles = StyleSheet.create({
     bouttonRdv:{
         flexDirection: "row",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "center",
         marginVertical:10,
         padding:10,
@@ -37,6 +37,7 @@ export default function AllAppointments(appointment: AppointmentType){
     appointmentText:{
         fontSize: 25,
         fontStyle: "italic",
-        marginLeft:15
+        marginLeft:15,
+        textAlign: "center"
     }
   })

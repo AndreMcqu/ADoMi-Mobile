@@ -1,8 +1,5 @@
 import {View, Text, StyleSheet} from 'react-native'
-import axios from 'axios'
 import FormulaireAppointment from '../components/aptCancel/form'
-
-
 
 export default function AppointmentCancel (){
 

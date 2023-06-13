@@ -1,20 +1,11 @@
 import { Pressable, Text, StyleSheet } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { Link } from "@react-navigation/native";
 
-export default function editButton({buttonFunction}:any){
+export default function cancelButton({cancelFunction}:any){
     
     return (
-        <Pressable onPress={buttonFunction} style={styles.editButton}>
-            
-            {/* <FontAwesome
-                name="pencil"
-                size={18}
-                label= "Détails"
-                style={styles.editIcon}
+        <Pressable onPress={cancelFunction} style={styles.editButton}>
 
-            /> */}
-        <Text style={styles.editText}>Annuler le rendez-vous</Text>
+            <Text style={styles.editText}>Annuler le rendez-vous</Text>
 
         </Pressable>
     )
