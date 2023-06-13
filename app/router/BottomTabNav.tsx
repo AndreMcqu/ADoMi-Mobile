@@ -9,6 +9,7 @@ const Material = MaterialCommunityIcons;
 
 import StackNavCalendar from './StackNavCalendar'
 import StackNavProfile from './StackNavProfile'
+import StackNavHome from './StackNavHome';
 
 const Tab = createBottomTabNavigator()
 
@@ -38,7 +39,7 @@ const screenOptions: {[key: string] : BottomTabNavigationOptions} = {
 export default function BottomTabNav(){
     return (
         <Tab.Navigator initialRouteName="home" screenOptions={{headerShown: false}} >
-            <Tab.Screen name='home' options={screenOptions.home} component={Home}/>
+            <Tab.Screen name='home' options={screenOptions.home} component={StackNavHome}/>
             <Tab.Screen name='calendar' options={screenOptions.calendar} component={StackNavCalendar}/>
             <Tab.Screen name='profile' options={screenOptions.profile} component={StackNavProfile}/>
             <Tab.Screen name='reduxTest' options={screenOptions.reduxTest} component={ReduxTest}/>

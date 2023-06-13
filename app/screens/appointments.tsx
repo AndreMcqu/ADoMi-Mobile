@@ -8,14 +8,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import 'moment/locale/fr';
+import { NGROK } from "./ngrokUrl";
 
 
 type props = StackScreenProps<CalendarStackParamList, 'Appointment'>
 
 
-export default function Appointments({route, navigation}: props){
+export default function Appointments({route, navigation}:props){
 
-    const carerId = route.params.carerId
+    // const carerId = route.params.carerId
     //appointmentData contiendra toutes les données appointments d'un carer
     const [appointmentData, setAppointmentInfo] = useState<AppointmentType[]>();
 
@@ -25,7 +26,7 @@ export default function Appointments({route, navigation}: props){
     const [selectedAppointment, setselectedAppointment] = useState<AppointmentType>();
 
     //url en dur pour effectuer des tests
-    const url = "https://b1b8-31-32-43-205.ngrok-free.app/carers/3/appointments"
+    const url = NGROK+"/carers/3/appointments"
 
     const fetchAppointmentInfo = ()=>{
 
@@ -55,19 +56,12 @@ export default function Appointments({route, navigation}: props){
 
     }
 
-    const appointmentObj = (selectedAppointment)? {
-            id: selectedAppointment.id,
-            idMission: selectedAppointment.idMission,
-            isVisible: isModalVisible,
-            onClose: {onModalClose},
-            date: selectedAppointment.date,
-            startHour: selectedAppointment.startHour,
-            endHour: selectedAppointment.endHour,
-            streetName: selectedAppointment.streetName,
-            streetNumber: selectedAppointment.streetNumber,
-            postCode: selectedAppointment.postCode,
-            city: selectedAppointment.city,
-        } : null
+    const cancelAppointment = ()=>{
+
+        navigation.navigate('Unavailable', {carerId: 3});
+        setIsModalVisible(false);
+
+    };
     
     //Conversion des dates et heures au format fr
     const appointmentDate = moment(selectedAppointment?.date).format('DD MMMM YYYY');
@@ -82,9 +76,9 @@ export default function Appointments({route, navigation}: props){
         
                 <View style={styles.subContainer}>
 
-                    <Text style={styles.title}>A - DO - MI</Text>
+                    <Text style={styles.title}>A Do Mi</Text>
 
-                    <Text style={styles.subtitle}>Vous n'avez aucun rendez-vous prévu</Text>
+                    <Text style={styles.subtitle}>Vous n'avez aucun rendez-vous</Text>
                     
                 </View>
 
@@ -101,9 +95,9 @@ export default function Appointments({route, navigation}: props){
     
                 <View style={styles.subContainer}>
     
-                    <Text style={styles.title}>A - DO - MI</Text>
+                    <Text style={styles.title}>A Do Mi</Text>
     
-                    <Text style={styles.subtitle}>Vos prochains rendez-vous :</Text>
+                    <Text style={styles.subtitle}>Vos rendez-vous :</Text>
     
                     <FlatList 
     
@@ -114,7 +108,7 @@ export default function Appointments({route, navigation}: props){
                                     }
                     />
                     
-                    <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH:mm")} endHour={endHour.format("HH:mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetNumber} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client}/>
+                    <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH") + "H" + startHour.format("mm")} endHour={endHour.format("HH") + "H" + endHour.format("mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetNumber} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client} cancelFunction={cancelAppointment}/>
                 </View>
                 <View style={styles.bottomLine}/>
         

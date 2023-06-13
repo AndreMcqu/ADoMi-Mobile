@@ -37,4 +37,5 @@ export type AppointmentProps = {
     postCode?: string;
     city?: string;
     client?: Client;
+    cancelFunction?: any;
 }

@@ -14,10 +14,10 @@ const Stack = createStackNavigator<ProfileStackParamList>();
 
 export default function StackNavProfile() {
     return (
-      <Stack.Navigator initialRouteName="Profile" screenOptions={{headerShown: false}} >
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Client List" component={ClientList} />
-        <Stack.Screen name="Unavailable" component={AppointmentCancel} />
-      </Stack.Navigator>
+        <Stack.Navigator initialRouteName="Profile" screenOptions={{headerShown: false}} >
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Client List" component={ClientList} />
+          <Stack.Screen name="Unavailable" component={AppointmentCancel} />
+        </Stack.Navigator>
     )
   }

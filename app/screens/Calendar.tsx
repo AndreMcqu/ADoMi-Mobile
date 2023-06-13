@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NGROK } from "./ngrokUrl";
 import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { Calendar, CalendarList, Agenda, AgendaEntry, AgendaSchedule } from 'react-native-calendars'
 import { FontAwesome } from "@expo/vector-icons";
@@ -70,7 +71,7 @@ export default function MyCalendar ({route, navigation}: props ) {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('https://ae8f-31-32-43-205.ngrok-free.app/customers/1/appointments');
+      const response = await fetch(NGROK+'/customers/1/appointments');
       const data = await response.json();
       setAppointments(data.appointments);
     } catch (error) {
