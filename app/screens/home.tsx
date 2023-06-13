@@ -1,9 +1,10 @@
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet} from 'react-native';
 
 export default function Home (){
+    
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Bonjoure</Text>
+            <Text style={styles.title}>A Do Mi</Text>
         </View>
     )
 }
@@ -18,9 +19,8 @@ const styles = StyleSheet.create({
     },
     title: {
         color: 'black',
-        fontSize: 26,
-        fontWeight: '400',
+        fontSize: 30,
+        fontWeight: '500',
     }
 
 })
-
