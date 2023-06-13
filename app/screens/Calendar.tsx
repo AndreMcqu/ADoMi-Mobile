@@ -58,10 +58,10 @@ export default function MyCalendar ({route, navigation}: props ) {
 
 
   const onDayPress = (day: any) => {
-    if (allMarkedDates[day.dateString]){
-      setAppointments(getApptFromDate(day.dateString, appts))
-      setModalDisplay(true)
-    }
+      if (allMarkedDates[day.dateString]){
+        setAppointments(getApptFromDate(day.dateString, appts))
+        setModalDisplay(true)
+      }
   }
 
 /*
@@ -81,7 +81,7 @@ export default function MyCalendar ({route, navigation}: props ) {
 */
 
   const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
-    return <Text style={{fontSize: 50}}> NOM DU CLIENT </Text>
+      return <Text style={{fontSize: 50}}> NOM DU CLIENT </Text>
   }
 
 
@@ -103,7 +103,7 @@ export default function MyCalendar ({route, navigation}: props ) {
           top: centerVertical(290) - 20,
           left: centerHorizontal(290),
           borderRadius: 10,
-          zIndex: 2, 
+          zIndex: 2,
           display: modalDisplay ? 'flex' : 'none'
           }}>
               <Text style={{fontSize: 21, fontWeight: '700', alignSelf: 'center', paddingTop: 21, marginBottom: -26}}>Rdv n° {apptCount+1}</Text>
@@ -114,11 +114,12 @@ export default function MyCalendar ({route, navigation}: props ) {
                   <TouchableOpacity onPress={() => apptCount > 0 && setApptCount(apptCount - 1)} style={s.leftArrowModal}>
                       <FontAwesome name="chevron-left" color="black" size={24}/>
                   </TouchableOpacity>
+                  
                   <View style={{backgroundColor: 'white', padding: 25, borderRadius: 7}}>
                       <Text style={s.modalText}>{appointments[apptCount]?.date}</Text>
                       <Text style={s.modalText}>{appointments[apptCount]?.city}</Text>
                       <Text style={s.modalText}>{appointments[apptCount]?.streetName}</Text>
-                      <Text style={s.modalText}> {appointments[apptCount] ? "De " + appointments[apptCount]?.startHour + " à " + appointments[apptCount]?.endHour : null}</Text>
+                      <Text style={s.modalText}>{appointments[apptCount] ? "De " + appointments[apptCount]?.startHour + " à " + appointments[apptCount]?.endHour : null}</Text>
                   </View>
                   <TouchableOpacity onPress={() => apptCount < appointments.length-1 && setApptCount(apptCount + 1)} style={s.rightArrowModal}>
                       <FontAwesome name="chevron-right" color="black" size={24}/>

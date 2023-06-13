@@ -18,7 +18,7 @@ const renderer = (itemObj: { item: Client }) => {
     let client = itemObj.item
     return (
         <View>
-            <Text>{client.first_name + client.last_name}</Text>
+            <Text>{/*clients.first_name + client.last_name*/}</Text>
         </View>
     )
 }

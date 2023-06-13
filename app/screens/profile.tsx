@@ -5,11 +5,27 @@ import { ProfileStackParamList } from '../router/StackNavProfile'
 type props = StackScreenProps<ProfileStackParamList, 'Profile'>
 
 
-export default function Profile ({route, navigation}: props){
+export default function Profile({ route, navigation }: props) {
     return (
         <View style={s.container}>
             <Text style={s.name}>Mme. Machin</Text>
-            <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Unavailable', {carerId: 1})}>
+
+            <View style={s.horizontal}>
+                <Text style={s.cap}>Secteur :</Text>
+                <Text> Yvelines</Text>
+            </View>
+
+            <View style={s.horizontal}>
+                <Text style={s.cap}>Agence :</Text>
+                <Text> Yvelines</Text>
+            </View>
+
+            <View style={s.horizontal}>
+                <Text style={s.cap}>E-mail :</Text>
+                <Text> test@test.com</Text>
+            </View>
+
+            <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Unavailable', { carerId: 1 })}>
                 <Text style={s.apptButtonText}>Informer d'une indisponibilité</Text>
             </TouchableOpacity>
         </View>
@@ -37,5 +53,13 @@ const s = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
         alignSelf: 'center',
-    }    
+    },
+    cap: {
+        fontWeight: 'bold'
+
+    },
+    horizontal: {
+        flexDirection: 'row',
+        paddingTop: 20,
+    }
 })

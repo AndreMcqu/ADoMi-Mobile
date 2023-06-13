@@ -37,7 +37,7 @@ export default function nextAppointments(appointment:AppointmentType){
 
                 </View>
 
-                <Text style={[styles.appointmentInfos, styles.clientName]}>{appointment.mission.client.first_name} {appointment.mission.client.last_name}</Text>
+                <Text style={[styles.appointmentInfos, styles.clientName]}>{appointment?.mission.client?.first_name} {appointment?.mission.client?.last_name}</Text>
 
             </View> 
 
