@@ -37,7 +37,7 @@ export default function Profile({ route, navigation }: props) {
     }, [])
 
 
-    console.log(user)
+    //console.log(user)
 
     
      return user 

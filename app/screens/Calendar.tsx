@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NGROK } from "../../ngrok/ngrokUrl";
+import NGROK from "../../ngrok/ngrokUrl";
 import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { Calendar, CalendarList, Agenda, AgendaEntry, AgendaSchedule } from 'react-native-calendars'
 import { FontAwesome } from "@expo/vector-icons";
@@ -9,22 +9,15 @@ import type { AppointmentType } from '../types/componentTypes'
 import {centerVertical, centerHorizontal, windowHeight} from '../dimensions/dimensions'
 //import AppointmentModal from '../components/appointmentComponents/appointmentModal'
 import moment from 'moment';
+import { getAppointments } from "../apiCalls";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { newAppts } from '../redux/store'
 
 type props = StackScreenProps<CalendarStackParamList, 'Calendar'>
 
-const fetchAppointments = async () => {
-  try {
-    //const response = await fetch(NGROK+'/customers/1/appointments');
-    //const data = await response.json();
-    return Promise.resolve(/*data.appointments*/ appointmentsExample)
-  }
-  catch (err) {
-    Promise.reject(err)
-    console.error('Error fetching appointments:', err);
-  }
-}
 
-
+/*
 const appointmentsExample: AppointmentType[] = [
   {
     city: "Versailles", date: "2023-06-14T11:00:00.000Z", endHour: '15:00:00', id: 1, idMission: 1, mission: { idClient: 1, idRecurrence: 1 }
@@ -42,14 +35,14 @@ const appointmentsExample: AppointmentType[] = [
     city: "Elancourt", date: "2023-06-15T11:00:00.000Z", endHour: "20:00:00", id: 2, idMission: 2, mission: { idClient: 1, idRecurrence: 2}
     , postCode: "78117", startHour: "19:30:00", streetName: "Allée du machin", streetNumber: "11"
   }
-
 ]
+*/
 
 type MarkedDates = {
   [key: string]: {selected: boolean, selectedColor: string}
 }
 
-const formatDates = (appts: AppointmentType[]): AppointmentType[] => appointmentsExample.map((appt) => { return { ...appt , date: moment(appt.date).format('YYYY-MM-DD') } })
+const formatDates = (appts: AppointmentType[]): AppointmentType[] => appts.map((appt) => { return { ...appt , date: moment(appt.date).format('YYYY-MM-DD') } })
 
 const formatHour = (time: string) => moment(time, 'hh:mm:ss').format('HH') + 'h' + moment(time, 'hh:mm:ss').format('mm')
 
@@ -77,6 +70,11 @@ export default function MyCalendar ({navigation, route}: props ) {
   const [modalDisplay, setModalDisplay] = useState(false)
   const [apptCount, setApptCount] = useState(0)
 
+  const dispatch = useDispatch()
+  const token = useSelector((state: RootState) => state.token.token)
+  const id = useSelector((state: RootState) => state.user.id)
+  const user = useSelector((state: RootState) => state.user.info)
+
   const onDayPress = (day: any) => {
       if (markedDates[day.dateString]){
         setDayAppts(getApptFromDate(day.dateString, appointments))
@@ -85,15 +83,24 @@ export default function MyCalendar ({navigation, route}: props ) {
   }
 
   useEffect(() => {
-    fetchAppointments()
+      getAppointments(token, '3')
       .then((appts) => {
-        appts = formatDates(appts!)
-        setAppointments(appts)
-        setMarkedDates(getMarkedDates(appts))
+            appts = formatDates(appts)
+            dispatch(newAppts(appts))
+            setAppointments(appts)
+            setMarkedDates(getMarkedDates(appts))
+            console.log(appts[1])
+            console.log(formatHour(appointments[1].endHour))
+            
       })
+      .catch((err) => {
+        console.error("error: ", err)
+      })
+
   }, [])
 
 
+  //console.log("appointments : ", appointments)
 
   const ModalItem = () => {
       return (
@@ -113,8 +120,8 @@ export default function MyCalendar ({navigation, route}: props ) {
                         <Text style={s.modalText}><Text style={s.bold}>Le </Text>{moment(dayAppts[apptCount].date).format('DD/MM/YYYY')}</Text>
                         <Text style={s.modalText}><Text style={s.bold}>Ville: </Text>{dayAppts[apptCount].city}</Text>
                         <Text style={s.modalText}>{dayAppts[apptCount].streetName}</Text>
-                        <Text style={s.modalText}><Text style={s.bold}>De </Text>{formatHour(appointments[apptCount]?.startHour)}</Text>
-                        <Text style={s.modalText}><Text style={s.bold}>À </Text>{formatHour(appointments[apptCount].endHour)}</Text>
+                        <Text style={s.modalText}><Text style={s.bold}>De </Text>{formatHour(dayAppts[apptCount].startHour)}</Text>
+                        <Text style={s.modalText}><Text style={s.bold}>À </Text>{formatHour(dayAppts[apptCount].endHour)}</Text>
 
                     </View>
                     <TouchableOpacity onPress={() => apptCount < dayAppts.length-1 && setApptCount(apptCount + 1)} style={s.rightArrowModal}>
