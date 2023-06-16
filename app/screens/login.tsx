@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, newToken, newUser, newId } from '../redux/store'
 import type {UserInit, UserAction, TokenInit, TokenAction} from '../redux/store'
-import { NGROK } from "../../ngrok/ngrokUrl";
+import NGROK from "../../ngrok/ngrokUrl";
 
 const resetToken = (token: string)  => {
     return {
@@ -38,7 +38,7 @@ export default function Login(){
             })
         }
 
-        console.log(options.body)
+        //console.log(options.body)
 
         fetch(url, options)
         .then(async res => {
@@ -51,7 +51,6 @@ export default function Login(){
         .catch(err => {
             console.error(err)
         })
-
     }
 
     return (

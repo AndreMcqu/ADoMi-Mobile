@@ -31,7 +31,7 @@ export type TokenAction = {
 }
 export type UserAction = {
     type: string
-    payload: UserInit
+    payload: typeof userInit.info
 }
 export type idAction = {
   type: string
@@ -53,7 +53,7 @@ export const userSlice = createSlice({
   initialState: userInit,
   reducers: {
       newUser: (state: UserInit, action: UserAction) => {
-          state.info = action.payload.info
+          state.info = action.payload
       },
       newId: (state: UserInit, action: idAction) => {
         state.id = action.payload
