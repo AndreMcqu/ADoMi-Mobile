@@ -21,9 +21,25 @@ const userInit = {
 const tokenInit = {
   token: ''
 }
+const apptsInit = [{
+    id: '',
+    idMission: '',
+    date: '',
+    startHour: '',  
+    endHour: '',
+    streetName: '',
+    streetNumber: '',
+    postCode: "",
+    city: "",
+    mission: {
+        idClient: '',
+        idRecurence: ''
+    }
+}]
 
 export type UserInit = typeof userInit
 export type TokenInit = typeof tokenInit
+export type ApptsInit = typeof apptsInit
 
 export type TokenAction = {
     type: string
@@ -32,6 +48,10 @@ export type TokenAction = {
 export type UserAction = {
     type: string
     payload: typeof userInit.info
+}
+export type ApptsAction = {
+  type: string
+  payload: typeof apptsInit
 }
 export type idAction = {
   type: string
@@ -61,6 +81,16 @@ export const userSlice = createSlice({
   },
 })
 
+export const apptSlice = createSlice({
+  name: 'appointments',
+  initialState: apptsInit,
+  reducers: {
+      newAppts: (state: ApptsInit, action: ApptsAction) => {
+          state = action.payload
+      },
+  },
+})
+
 
 /*
 function tokenReducer(state = tokenInit, action: Action) {
@@ -83,6 +113,7 @@ const store = configureStore({
 
 export const {newToken} = tokenSlice.actions
 export const {newUser, newId} = userSlice.actions
+export const {newAppts} = apptSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

@@ -4,7 +4,7 @@ import Home from '../screens/home'
 import Appointments from '../screens/appointments';
 import ReduxTest from '../screens/reduxTest';
 import { Ionicons } from '@expo/vector-icons'; 
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons }  from '@expo/vector-icons'; 
 const Material = MaterialCommunityIcons;
 
 import StackNavCalendar from './StackNavCalendar'
@@ -42,7 +42,7 @@ export default function BottomTabNav(){
             <Tab.Screen name='home' options={screenOptions.home} component={StackNavHome}/>
             <Tab.Screen name='calendar' options={screenOptions.calendar} component={StackNavCalendar}/>
             <Tab.Screen name='profile' options={screenOptions.profile} component={StackNavProfile}/>
-            <Tab.Screen name='reduxTest' options={screenOptions.reduxTest} component={ReduxTest}/>
+            {/* {<Tab.Screen name='reduxTest' options={screenOptions.reduxTest} component={ReduxTest}/>} */}
         </Tab.Navigator>
     )
 }
