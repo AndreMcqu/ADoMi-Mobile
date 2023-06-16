@@ -8,7 +8,6 @@ export type HomeStackParamList = {
     Home: {carerId: number},
     Appointment : {carerId: number},
     Calendar: {carerId: number}, 
-    Unavailable: {carerId: number}
 }
 
 const Stack = createStackNavigator<HomeStackParamList>();
@@ -19,7 +18,6 @@ export default function StackNavHome(){
             <Stack.Screen name="Home" component={Home}/>
             <Stack.Screen name="Appointment" component={Appointments}/>
             <Stack.Screen name="Calendar" component={MyCalendar}/>
-            <Stack.Screen name="Unavailable" component={AppointmentCancel}/>
         </Stack.Navigator>
     )
 }

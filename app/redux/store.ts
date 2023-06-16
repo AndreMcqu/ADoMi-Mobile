@@ -7,7 +7,7 @@ type Action = {
 }
 
 const tokenInit = {
-    token: 'daz*$v.qz-dD13C4**h'
+    token: 'Token initial à la con'
 }
 
 function tokenReducer(state = tokenInit, action: Action) {
@@ -17,7 +17,7 @@ function tokenReducer(state = tokenInit, action: Action) {
         token: action.payload
       }
     }
-    return state
+    return tokenInit
   }
 
 const store = configureStore({ reducer: tokenReducer })

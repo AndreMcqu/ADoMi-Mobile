@@ -16,7 +16,7 @@ export type AppointmentType = {
     mission: {
         client?: Client
         idClient?: number
-        idReccurence?: number
+        idRecurrence?: number
     }
 }
 

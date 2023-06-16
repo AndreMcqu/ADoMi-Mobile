@@ -40,17 +40,17 @@ const resetToken = (token: string) => {
 
 
 export default function ReduxTest (){
-        const [text, setText] = useState<string>()
         const token = useSelector((state: RootState) => state.token)
         const dispatch = useDispatch()    
+        const [text, setText] = useState<string>(token)
         //getApiData()
     return (
         <View style={s.container}>
             <Text style={s.title}>Bonjour</Text>
-            <TextInput style={s.textInput} onChangeText={(val) => setText(val)}/>
+            <TextInput style={s.textInput} onChangeText={(val) => setText(val)} value={text}/>
             <TouchableOpacity 
                 style={s.button} 
-                onPress={() => text && dispatch(resetToken(text))}
+                onPress={() => dispatch(resetToken(text))}
             >
                 <Text style={s.buttonText}>Set Token</Text>
             </TouchableOpacity>

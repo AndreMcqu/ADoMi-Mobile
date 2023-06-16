@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, FlatList, Pressable, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
-import { NGROK } from './ngrokUrl';
+import { NGROK } from '../../ngrok/ngrokUrl';
 import { useState, useEffect } from "react";
 import { AppointmentType } from '../types/componentTypes';
 import axios from 'axios';

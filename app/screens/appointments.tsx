@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import 'moment/locale/fr';
-import { NGROK } from "./ngrokUrl";
+import { NGROK } from "../../ngrok/ngrokUrl";
 
 
 type props = StackScreenProps<CalendarStackParamList, 'Appointment'>

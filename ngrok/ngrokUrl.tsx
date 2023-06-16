@@ -1,0 +1,1 @@
+export const NGROK = "d57c-2a01-e0a-cb2-f310-889a-b036-2c7b-4a0c.ngrok-free.app";

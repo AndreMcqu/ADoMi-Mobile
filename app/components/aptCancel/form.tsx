@@ -1,20 +1,22 @@
-import React ,{ChangeEvent, SyntheticEvent, useState, useEffect} from 'react';
-import { Button, StyleSheet, Alert, Pressable, TextInput } from 'react-native';
+import {ChangeEvent, SyntheticEvent, useState} from 'react';
+import { Button, StyleSheet, Alert, Pressable, TextInput, TouchableOpacity } from 'react-native';
 import sendEmail from './sendEmail';
-
+import { AppointmentType } from '../../types/componentTypes'
 import { Text, View } from 'react-native';
+import moment from 'moment'
 
-export default function FormulaireAppointment(): JSX.Element {
+const formatHour = (time: string) => moment(time, 'hh:mm:ss').format('HH') + 'h' + moment(time, 'hh:mm:ss').format('mm')
 
-    const [input, setInput] = React.useState('');
+
+export default function FormulaireAppointment(props: {appt: AppointmentType}): JSX.Element {
+
+    const defaultText = "Bonjour, je vous contacte car je souhaiterais annuler le rdv du " + props.appt.date + " de " + formatHour(props.appt.startHour) + " à " + formatHour(props.appt.endHour) + ", en raison d'une indisponibilité liée à un rdv médical important."
+    const [input, setInput] = useState(defaultText);
+
 
     const sendInput = async () => {
-        
-        //imaginer un envoi de mail
         if(input){
-
             console.log(input);
-
             sendEmail(
                 'konomoha@hotmail.fr',
                 'Annulation de rendez-vous',
@@ -24,62 +26,57 @@ export default function FormulaireAppointment(): JSX.Element {
                 console.log('Message envoyé!');
             }).catch((err)=>{
                 console.log(err);
-                
-            });
-
+            })
         }
         else{
-
             alert('Veuillez saisir un corps de message !')
         }
-
     }
 
     return(
         <View style={styles.formulaire}>
             <TextInput
-                style={styles.input}
+                multiline = {true}
+                numberOfLines = {20}
+                style={styles.textInput}
                 onChangeText={(value)=>{setInput(value)}}
-                placeholder="Raison de l'annulation"
+                value={input}
             />
-            <Pressable  style={styles.pressableButton} onPress={sendInput}>
+            <TouchableOpacity  style={styles.pressableButton} onPress={sendInput}>
                 <Text style={styles.textButton}>Confirmer</Text>
-            </Pressable>
+            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     formulaire: {
-      width:'80%',
-      marginVertical: '5%',
-      marginHorizontal:'10%',
+      marginVertical: 49,
       alignItems:'center'
     },
     pressableButton:{
-        width:'50%',
-        height:50,
-        alignItems:'center',
-        justifyContent:'center',
-    },
-    textButton:{
         backgroundColor: "#FFC0CB",
         borderWidth:1,
-        borderRadius:5,
-        padding:10,
+        borderRadius:6,
+        paddingVertical: 15,
+        paddingHorizontal: 26,
+        marginTop: 48,
+    },
+    textButton:{
         textAlign:'center',
         justifyContent:'center',
-        fontWeight: "bold"
+        fontWeight: "600",
+        fontSize: 16,
     },
-    input:{
+    textInput:{
         backgroundColor:"#edf2f7",
-        textAlign:'center',
+        marginHorizontal: '8%',
         height: 200,
-        width:'80%',
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
+        borderWidth: 1.5,
+        padding: 21,
+        paddingTop: 18,
         borderRadius:5,
+        fontSize: 17,
     }
     
   });
