@@ -8,12 +8,16 @@ import moment from 'moment'
 const formatHour = (time: string) => moment(time, 'hh:mm:ss').format('HH') + 'h' + moment(time, 'hh:mm:ss').format('mm')
 
 
-export default function FormulaireAppointment(props: {appt: AppointmentType}): JSX.Element {
+export default function FormulaireAppointment(props: {appt?: AppointmentType}): JSX.Element {
 
-    const defaultText = "Bonjour, je vous contacte car je souhaiterais annuler le rdv du " + props.appt.date + " de " + formatHour(props.appt.startHour) + " à " + formatHour(props.appt.endHour) + ", en raison d'une indisponibilité liée à un rdv médical important."
+    let dateStart = Date()
+    let dateEnd = Date()
+    const defaultText = (props.appt) 
+        ? "Bonjour, je vous contacte car je souhaiterais annuler le rdv du " + props.appt.date + " de " + formatHour(props.appt.startHour) + " à " + formatHour(props.appt.endHour) + ", en raison d'une indisponibilité liée à un rdv médical important."
+        : "Bonjour, je vous contacte car je souhaiterais vous prévenir de mon incapacité à répondre aux missions prévues entre le " + moment(dateStart).format('DD/MM/YYYY') + " à " + formatHour(dateStart) + " et le " + moment(dateEnd).format('DD/MM/YYYY') + " à " + formatHour(dateEnd) + " en raison d'une indisponibilité liée à un rdv médical important."
+    
+
     const [input, setInput] = useState(defaultText);
-
-
     const sendInput = async () => {
         if(input){
             console.log(input);

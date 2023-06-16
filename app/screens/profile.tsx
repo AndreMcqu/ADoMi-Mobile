@@ -25,7 +25,7 @@ export default function Profile({ route, navigation }: props) {
                 <Text> test@test.com</Text>
             </View>
 
-            <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Unavailable', { carerId: 1 })}>
+            <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('AppointmentCancel', { carerId: 1 })}>
                 <Text style={s.apptButtonText}>Informer d'une indisponibilité</Text>
             </TouchableOpacity>
         </View>

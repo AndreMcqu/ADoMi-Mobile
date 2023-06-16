@@ -9,10 +9,15 @@ import moment from 'moment'
 moment.locale('fr')
 
 function CheckLogin(){
-  const token = useSelector((state: RootState) => state.token)
-  console.warn('token :' + token)
+  const token = useSelector((state: RootState) => state.token.token)
+  const user = useSelector((state: RootState) => state.user.info)
+  const userId = useSelector((state: RootState) => state.user.id)
+
+  token && console.warn('token : ' + token)
+  userId && console.warn("user id : " + userId)
+
   return (
-      token.length > 0
+      token && token.length > 0
       ? 
         (
             <NavigationContainer>

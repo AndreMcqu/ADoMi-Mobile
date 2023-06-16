@@ -26,7 +26,7 @@ export default function Appointments({route, navigation}:props){
     const [selectedAppointment, setselectedAppointment] = useState<AppointmentType>();
 
     //url en dur pour effectuer des tests
-    const url = NGROK+"/carers/3/appointments"
+    const url = 'https://'+NGROK+"/carers/3/appointments"
 
     const fetchAppointmentInfo = ()=>{
 
@@ -36,7 +36,7 @@ export default function Appointments({route, navigation}:props){
             setAppointmentInfo(data);
             
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log('erreur d\'Axios sur appointments'))
     }
 
     // fetch des données appointment
@@ -58,7 +58,7 @@ export default function Appointments({route, navigation}:props){
 
     const cancelAppointment = ()=>{
 
-        navigation.navigate('Unavailable', {carerId: 3});
+        navigation.navigate('AppointmentCancel', {carerId: 3});
         setIsModalVisible(false);
 
     };

@@ -13,7 +13,7 @@ export default function Home({ route, navigation }: props) {
 
     // const carerId = route.params.carerId;
 
-    const url = NGROK + "/carers/3/appointments"
+    const url = 'https://'+NGROK + "/carers/3/appointments"
     const [appointmentData, setAppointmentData] = useState<AppointmentType[]>([]);
 
     useEffect(() => {

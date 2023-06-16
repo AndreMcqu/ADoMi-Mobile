@@ -1,11 +1,11 @@
 import {View, Text, StyleSheet, TextInput, Image, TouchableOpacity} from 'react-native'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../redux/store'
+import { RootState, newToken, newUser, newId } from '../redux/store'
+import type {UserInit, UserAction, TokenInit, TokenAction} from '../redux/store'
 import { NGROK } from "../../ngrok/ngrokUrl";
-import axios, {AxiosError} from 'axios'
 
-const resetToken = (token: string) => {
+const resetToken = (token: string)  => {
     return {
         type: 'token/new',
         payload: token
@@ -15,7 +15,7 @@ const resetToken = (token: string) => {
 export default function Login(){
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const token = useSelector((state: RootState) => state.token)
+    const token = useSelector((state: RootState) => state.token.token)
     const dispatch = useDispatch()
 
     const signIn = () => {
@@ -24,37 +24,34 @@ export default function Login(){
         }
         // username: marie.Ddoupeter
         // password: Mdp1234*
+        const url = "http://"+ NGROK + "/sign-in"
         const options = {
             method: 'POST',
-            url: "http://"+ NGROK + "/sign-in",
             headers: {
-                'ngrok-skip-browser-warning': true,
-                'User-Agent': 'adomi/1'
+                'ngrok-skip-browser-warning': 'true',
+                'User-Agent': 'adomi/1',
+                'Content-Type': 'application/json'
             },
-            data: {
+            body: JSON.stringify({
                 username: username,
                 password: password
-            }
+            })
         }
-        axios(options)
-        .then(res => {
-            console.log(res.status)
-            dispatch(resetToken(res.data.token))
+
+        console.log(options.body)
+
+        fetch(url, options)
+        .then(async res => {
+            const data = await res.json()
+            console.log(data.status)
+            console.log(data)
+            dispatch(newToken(data.token))
+            dispatch(newId(data.id))
         })
-        .catch((error: AxiosError) => {
-            console.log("** FAILED ** ")
-            if (error.response) {
-                console.log("error response status : ", error.response.status)
-                console.log("error response : ", error.response.data)
-                return
-            }
-            if (error.request) {
-                console.log("error request : ", error.request)
-                return
-            }
-            console.log('Error unknown : ', error.message)
+        .catch(err => {
+            console.error(err)
         })
-        
+
     }
 
     return (

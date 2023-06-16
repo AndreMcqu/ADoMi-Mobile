@@ -8,7 +8,7 @@ import { AppointmentType } from '../types/componentTypes'
 export type CalendarStackParamList = {
     Calendar: {carerId: number};
     Appointment: {carerId: number};
-    AppointmentCancel: {carerId: number, appointment: AppointmentType};
+    AppointmentCancel: {carerId: number, appointment?: AppointmentType};
 }
 
 

@@ -8,7 +8,7 @@ import { AppointmentType } from '../types/componentTypes'
 export type ProfileStackParamList = {
   Profile: {carerId: number}
   "Client List": {carerId: number}
-  AppointmentCancel: {carerId: number, appointment: AppointmentType};
+  AppointmentCancel: {carerId: number, appointment?: AppointmentType};
 }
 
 

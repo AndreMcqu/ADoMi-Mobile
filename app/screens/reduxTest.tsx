@@ -3,6 +3,7 @@ import { useState } from 'react'
 import axios, { AxiosError } from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../redux/store'
+import { newToken } from '../redux/store'
 
 const getApiData = () => {
     //console.log('Hé ho !')
@@ -31,16 +32,9 @@ const getApiData = () => {
 }
 
 
-const resetToken = (token: string) => {
-    return {
-        type: 'token/new',
-        payload: token
-    }
-}
-
 
 export default function ReduxTest (){
-        const token = useSelector((state: RootState) => state.token)
+        const token = useSelector((state: RootState) => state.token.token)
         const dispatch = useDispatch()    
         const [text, setText] = useState<string>(token)
         //getApiData()
@@ -50,7 +44,7 @@ export default function ReduxTest (){
             <TextInput style={s.textInput} onChangeText={(val) => setText(val)} value={text}/>
             <TouchableOpacity 
                 style={s.button} 
-                onPress={() => dispatch(resetToken(text))}
+                onPress={() => dispatch(newToken(text))}
             >
                 <Text style={s.buttonText}>Set Token</Text>
             </TouchableOpacity>
