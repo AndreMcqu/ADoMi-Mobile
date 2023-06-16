@@ -3,6 +3,19 @@ export type Client = {
     last_name?: string
 }
 
+export type Carer = {
+    first_name:string;
+    last_name:string;
+    email:string;
+    //password:string;
+    user_name:string;
+    phone:string;
+    street_name:string;
+    street_number:string;
+    post_code: string;
+    city:string;
+}
+
 export type AppointmentType = {
     id?: number
     idMission: number

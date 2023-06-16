@@ -1,20 +1,31 @@
 import {ChangeEvent, SyntheticEvent, useState} from 'react';
-import { Button, StyleSheet, Alert, Pressable, TextInput, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, Alert, Pressable, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import sendEmail from './sendEmail';
+import type { Carer } from '../../types/componentTypes'
 import { AppointmentType } from '../../types/componentTypes'
 import { Text, View } from 'react-native';
 import moment from 'moment'
+import {Keyboard} from 'react-native'
 
 const formatHour = (time: string) => moment(time, 'hh:mm:ss').format('HH') + 'h' + moment(time, 'hh:mm:ss').format('mm')
 
 
-export default function FormulaireAppointment(props: {appt?: AppointmentType}): JSX.Element {
+export default function FormulaireAppointment(props: {appt?: AppointmentType, user?: Carer}): JSX.Element {
 
     let dateStart = Date()
     let dateEnd = Date()
-    const defaultText = (props.appt) 
-        ? "Bonjour, je vous contacte car je souhaiterais annuler le rdv du " + props.appt.date + " de " + formatHour(props.appt.startHour) + " à " + formatHour(props.appt.endHour) + ", en raison d'une indisponibilité liée à un rdv médical important."
-        : "Bonjour, je vous contacte car je souhaiterais vous prévenir de mon incapacité à répondre aux missions prévues entre le " + moment(dateStart).format('DD/MM/YYYY') + " à " + formatHour(dateStart) + " et le " + moment(dateEnd).format('DD/MM/YYYY') + " à " + formatHour(dateEnd) + " en raison d'une indisponibilité liée à un rdv médical important."
+    let defaultText = (props.appt) 
+        ? ("Bonjour, je vous contacte car je souhaiterais annuler le rdv du " 
+            + props.appt.date + " de " + formatHour(props.appt.startHour) + " à " 
+            + formatHour(props.appt.endHour) + ", en raison d'une indisponibilité liée à un rdv médical important.")
+            + "\n\nCordialement, "
+        : "Bonjour, je vous contacte car je souhaiterais vous prévenir de mon incapacité à répondre aux missions prévues entre le " 
+            + moment(dateStart).format('DD/MM/YYYY') + " à " + formatHour(dateStart) + " et le " + moment(dateEnd).format('DD/MM/YYYY') 
+            + " à " + formatHour(dateEnd) + ", en raison d'une indisponibilité liée à un rdv médical important."
+            + "\n\nCordialement, "
+
+    defaultText += props.user ? `\n${props.user?.first_name} ${props.user?.last_name}, `: ""
+
     
 
     const [input, setInput] = useState(defaultText);
@@ -38,10 +49,11 @@ export default function FormulaireAppointment(props: {appt?: AppointmentType}): 
     }
 
     return(
-        <View style={styles.formulaire}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={styles.formulaire}>
             <TextInput
                 multiline = {true}
-                numberOfLines = {20}
+                numberOfLines = {50}
                 style={styles.textInput}
                 onChangeText={(value)=>{setInput(value)}}
                 value={input}
@@ -49,7 +61,8 @@ export default function FormulaireAppointment(props: {appt?: AppointmentType}): 
             <TouchableOpacity  style={styles.pressableButton} onPress={sendInput}>
                 <Text style={styles.textButton}>Confirmer</Text>
             </TouchableOpacity>
-        </View>
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 
@@ -75,10 +88,10 @@ const styles = StyleSheet.create({
     textInput:{
         backgroundColor:"#edf2f7",
         marginHorizontal: '8%',
-        height: 200,
+        height: 370,
         borderWidth: 1.5,
-        padding: 21,
-        paddingTop: 18,
+        padding: 19,
+        paddingTop: 20,
         borderRadius:5,
         fontSize: 17,
     }
