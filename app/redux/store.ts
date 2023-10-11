@@ -66,8 +66,13 @@ export const tokenSlice = createSlice({
     newToken: (state: TokenInit, action: TokenAction) => {
         state.token = action.payload
     },
+    deleteToken: (state: TokenInit) => {
+        console.log('delete token in store')
+        state.token = ''
+    }
   },
 })
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: userInit,
@@ -77,7 +82,11 @@ export const userSlice = createSlice({
       },
       newId: (state: UserInit, action: idAction) => {
         state.id = action.payload
-    },
+      },
+      deleteUser: (state: UserInit) => {
+        state = userInit
+        console.log('delete user in store')
+      }
   },
 })
 
@@ -111,8 +120,8 @@ const store = configureStore({
   } 
 })
 
-export const {newToken} = tokenSlice.actions
-export const {newUser, newId} = userSlice.actions
+export const {newToken, deleteToken} = tokenSlice.actions
+export const {newUser, newId, deleteUser} = userSlice.actions
 export const {newAppts} = apptSlice.actions
 
 export type RootState = ReturnType<typeof store.getState>

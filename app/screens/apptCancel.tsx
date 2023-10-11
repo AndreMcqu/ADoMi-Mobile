@@ -20,7 +20,7 @@ export default function AppointmentCancel ({navigation, route}: props){
     useEffect(() => {
         if (!user){
             getUserInfo(id, token)
-            .then(json => dispatch(newUser(json))) 
+            .then(json => dispatch(newUser(json)))
             .catch(err => console.log(err))
         }
     }, [])

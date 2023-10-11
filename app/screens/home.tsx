@@ -1,38 +1,33 @@
 import { View, Text, StyleSheet, FlatList, Pressable, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
-import NGROK from '../../ngrok/ngrokUrl';
+import { fetchLatestAppointments } from '../apiCalls'
+import {Scheme, Domain} from '../../env/api_conn';
 import { useState, useEffect } from "react";
 import { AppointmentType } from '../types/componentTypes';
 import axios from 'axios';
 import NextAppointments from '../components/homeComponents/nextAppointments';
 import { StackScreenProps } from '@react-navigation/stack';
 import { HomeStackParamList } from '../router/StackNavHome';
+import { useSelector, useDispatch } from 'react-redux'
+import type { RootState } from '../redux/store'
 
 type props = StackScreenProps<HomeStackParamList, "Home">
 
 export default function Home({ route, navigation }: props) {
 
     // const carerId = route.params.carerId;
-
-    const url = 'https://'+NGROK + "/carers/3/appointments"
     const [appointmentData, setAppointmentData] = useState<AppointmentType[]>([]);
+    const token = useSelector((state: RootState) => state.token.token)
+    const userId = useSelector((state: RootState) => state.user.id)
+
+    const fetchAppts = () => fetchLatestAppointments(userId, token).then((appts) => appts && setAppointmentData(appts) )
 
     useEffect(() => {
-        fetchLatestAppointments()
-    }, []);
-
-    const fetchLatestAppointments = () => {
-
-        axios.get(url)
-            .then((response) => {
-                // console.log(response.data)
-                const data = response.data;
-                setAppointmentData(data);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-
-    }
+            fetchAppts()
+            const i = setInterval(() => {
+                fetchAppts()
+            }, 10000)
+        return () => clearInterval(i)
+    }, [])
 
 
     if (!appointmentData?.length) {
@@ -44,7 +39,7 @@ export default function Home({ route, navigation }: props) {
                 <View style={styles.appointmentSection}>
                     <Text style={styles.subtitle}>Aucun rendez-vous prévu prochainement</Text>
 
-                    <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate('Appointment', { carerId: 3 })}>
+                    <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate('Appointments', { carerId: 3 })}>
                         <Text style={styles.apptButtonText}>Voir tous les rendez-vous</Text>
                     </TouchableOpacity>
 
@@ -56,6 +51,7 @@ export default function Home({ route, navigation }: props) {
         )
 
     }
+    
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>A Do Mi</Text>
@@ -71,7 +67,7 @@ export default function Home({ route, navigation }: props) {
                 }
             />
             {/* <View style={styles.buttonsContainer}> */}
-            <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate('Appointment', { carerId: 3 })}>
+            <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate('Appointments', { carerId: 3 })}>
                 <Text style={styles.apptButtonText}>Voir tous les rendez-vous</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate("Calendar", { carerId: 3 })}>
@@ -92,8 +88,6 @@ const styles = StyleSheet.create({
         height: "100%",
         flex: 1,
         marginTop: StatusBar.currentHeight || 0,
-
-
     },
     test: {
         borderWidth: 1,

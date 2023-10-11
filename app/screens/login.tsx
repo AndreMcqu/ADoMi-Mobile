@@ -3,53 +3,33 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, newToken, newUser, newId } from '../redux/store'
 import type {UserInit, UserAction, TokenInit, TokenAction} from '../redux/store'
-import NGROK from "../../ngrok/ngrokUrl";
+import { getUserInfo, signIn } from '../apiCalls'
+import {Domain, Scheme} from "../../env/api_conn";
 
-const resetToken = (token: string)  => {
-    return {
-        type: 'token/new',
-        payload: token
-    }
-}
 
-export default function Login(){
+export default function Login() {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const [authError, setAuthError] = useState<string>('')
     const token = useSelector((state: RootState) => state.token.token)
     const dispatch = useDispatch()
 
-    const signIn = () => {
+    const handleSignIn = () => {
+        // username: marie.Ddoupeter
+        // password: Mdp1234*
         if (username.length == 0 || password.length == 0){
             return
         }
-        // username: marie.Ddoupeter
-        // password: Mdp1234*
-        const url = "http://"+ NGROK + "/sign-in"
-        const options = {
-            method: 'POST',
-            headers: {
-                'ngrok-skip-browser-warning': 'true',
-                'User-Agent': 'adomi/1',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
-        }
-
-        //console.log(options.body)
-
-        fetch(url, options)
-        .then(async res => {
-            const data = await res.json()
-            console.log(data.status)
-            console.log(data)
-            dispatch(newToken(data.token))
-            dispatch(newId(data.id))
+        signIn(username, password)
+        .then(json => {
+            dispatch(newToken(json.token))
+            dispatch(newId(json.id))
+            getUserInfo(json.id, json.token)
+                .then((json) =>  dispatch(newUser(json)))
+                .catch((err) => console.log("err at getUserInfo dans login \n", err) )
         })
         .catch(err => {
-            console.error(err)
+            setAuthError(typeof err === "string" ? err : "Une erreur inconnue est survenue")
         })
     }
 
@@ -60,10 +40,11 @@ export default function Login(){
                 source={require('../../assets/Adomi_black.png')}
             />
             <Text style={s.title}>Veuillez vous connecter</Text>
+            <Text style={s.error}> { authError } </Text>
             <TextInput style={s.input} placeholderTextColor={'#353535'} placeholder={"Nom d'utilisateur"} value={username} onChangeText={(text) => setUsername(text)}/>
             <TextInput style={s.input} placeholderTextColor={'#353535'} placeholder={"Mot de passe"} value={password} textContentType="password" secureTextEntry={true} onChangeText={(text) => setPassword(text)}/>
             
-            <TouchableOpacity style={s.apptButton} onPress={() => signIn()}>
+            <TouchableOpacity style={s.apptButton} onPress={() => handleSignIn()}>
                 <Text style={s.apptButtonText}>Se connecter</Text>
             </TouchableOpacity>
 
@@ -85,7 +66,7 @@ const s = StyleSheet.create({
     },
     title: {
         fontSize: 22,
-        marginBottom: 66,
+        marginBottom: 45,
         alignSelf: 'center'
     },
     input: {
@@ -113,6 +94,15 @@ const s = StyleSheet.create({
         fontWeight: '500',
         alignSelf: 'center',
     },
-    
+    error: {
+        fontSize: 17.5,
+        marginBottom: 22,
+        marginHorizontal: 10,
+        textAlign: 'center',
+        alignSelf: 'center',
+        color: 'red',
+        fontWeight: '500',
+    },
+
     
 })

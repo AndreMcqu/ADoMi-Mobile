@@ -33,7 +33,7 @@ const getApiData = () => {
 
 
 
-export default function ReduxTest (){
+export default function ReduxTest () {
         const token = useSelector((state: RootState) => state.token.token)
         const dispatch = useDispatch()    
         const [text, setText] = useState<string>(token)

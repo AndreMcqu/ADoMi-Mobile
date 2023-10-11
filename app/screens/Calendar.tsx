@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import NGROK from "../../ngrok/ngrokUrl";
+import {Domain, Scheme} from '../../env/api_conn';
 import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { Calendar, CalendarList, Agenda, AgendaEntry, AgendaSchedule } from 'react-native-calendars'
 import { FontAwesome } from "@expo/vector-icons";
@@ -42,11 +42,11 @@ type MarkedDates = {
   [key: string]: {selected: boolean, selectedColor: string}
 }
 
-const formatDates = (appts: AppointmentType[]): AppointmentType[] => appts.map((appt) => { return { ...appt , date: moment(appt.date).format('YYYY-MM-DD') } })
+const formatDates = (appts: AppointmentType[]): AppointmentType[] => appts.map((appt) => ({ ...appt , date: moment(appt.date).format('YYYY-MM-DD') }) )
 
-const formatHour = (time: string) => moment(time, 'hh:mm:ss').format('HH') + 'h' + moment(time, 'hh:mm:ss').format('mm')
+const formatHHMM = (time: string) => moment(time, 'hh:mm:ss').format('HH') + 'h' + moment(time, 'hh:mm:ss').format('mm')
 
-const getMarkedDates = (apptList: AppointmentType[]) => {
+const getMarkedDates = (apptList: AppointmentType []) => {
     let apptDates: MarkedDates = {}
     apptList.forEach(appt => {
       apptDates[appt.date] = {selected: true, selectedColor: 'pink'}
@@ -54,8 +54,8 @@ const getMarkedDates = (apptList: AppointmentType[]) => {
     return apptDates
 }
 
-const getApptFromDate = (date: string, appts: AppointmentType[]): AppointmentType[] => {
-    const dayAppts: AppointmentType[] = []
+const getApptsOfTheDay = (date: string, appts: AppointmentType []): AppointmentType [] => {
+    const dayAppts: AppointmentType [] = []
     appts.forEach((appt) => {
         if (appt.date == date) dayAppts.push(appt)
     })
@@ -73,25 +73,24 @@ export default function MyCalendar ({navigation, route}: props ) {
   const dispatch = useDispatch()
   const token = useSelector((state: RootState) => state.token.token)
   const id = useSelector((state: RootState) => state.user.id)
-  const user = useSelector((state: RootState) => state.user.info)
+  //const user = useSelector((state: RootState) => state.user.info)
 
   const onDayPress = (day: any) => {
-      if (markedDates[day.dateString]){
-        setDayAppts(getApptFromDate(day.dateString, appointments))
+      if (markedDates[day.dateString]) {
+        setDayAppts(getApptsOfTheDay(day.dateString, appointments))
         setModalDisplay(true)
       }
   }
 
   useEffect(() => {
-      getAppointments(token, '3')
+      getAppointments(id, token)
       .then((appts) => {
             appts = formatDates(appts)
             dispatch(newAppts(appts))
             setAppointments(appts)
             setMarkedDates(getMarkedDates(appts))
-            console.log(appts[1])
-            console.log(formatHour(appointments[1].endHour))
-            
+            //console.log("appts", appts)
+            //console.log(formatHHMM(appts[0]?.endHour))
       })
       .catch((err) => {
         console.error("error: ", err)
@@ -120,9 +119,8 @@ export default function MyCalendar ({navigation, route}: props ) {
                         <Text style={s.modalText}><Text style={s.bold}>Le </Text>{moment(dayAppts[apptCount].date).format('DD/MM/YYYY')}</Text>
                         <Text style={s.modalText}><Text style={s.bold}>Ville: </Text>{dayAppts[apptCount].city}</Text>
                         <Text style={s.modalText}>{dayAppts[apptCount].streetName}</Text>
-                        <Text style={s.modalText}><Text style={s.bold}>De </Text>{formatHour(dayAppts[apptCount].startHour)}</Text>
-                        <Text style={s.modalText}><Text style={s.bold}>À </Text>{formatHour(dayAppts[apptCount].endHour)}</Text>
-
+                        <Text style={s.modalText}><Text style={s.bold}>De </Text>{formatHHMM(dayAppts[apptCount].startHour)}</Text>
+                        <Text style={s.modalText}><Text style={s.bold}>À </Text>{formatHHMM(dayAppts[apptCount].endHour)}</Text>
                     </View>
                     <TouchableOpacity onPress={() => apptCount < dayAppts.length-1 && setApptCount(apptCount + 1)} style={s.rightArrowModal}>
                         <FontAwesome name="chevron-right" color="black" size={24}/>
@@ -133,7 +131,7 @@ export default function MyCalendar ({navigation, route}: props ) {
                     <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('AppointmentCancel', {carerId: 3, appointment: dayAppts[apptCount]})}>
                         <Text style={s.apptButtonText}>Annuler ce rdv</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Appointment', {carerId: 3})}>
+                    <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Appointment', {carerId: 3, appointmentId: dayAppts[apptCount].id! })}>
                         <Text style={s.apptButtonText}>Détails rdv</Text>
                     </TouchableOpacity>
                 </View>

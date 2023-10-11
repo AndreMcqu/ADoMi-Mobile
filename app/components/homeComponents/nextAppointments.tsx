@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
 import 'moment/locale/fr';
 
-export default function nextAppointments(appointment:AppointmentType){
+export default function nextAppointments(appointment: AppointmentType){
 
     const appointmentDate = moment(appointment.date).format('dddd DD MMMM YYYY');
     const startHour = moment(appointment.startHour, "HH:mm:ss");
@@ -15,9 +15,7 @@ export default function nextAppointments(appointment:AppointmentType){
         <View style={styles.appointmentContainer}>
 
             <View style={styles.mainInfos}>
-
                 <Text  style={styles.appointmentInfos}>{appointmentDate}</Text>
-
                 <View style={styles.appointmentTime}>
 
                     <Text style={styles.appointmentInfos}>
@@ -36,21 +34,15 @@ export default function nextAppointments(appointment:AppointmentType){
                     </Text>
 
                 </View>
-
                 <Text style={[styles.appointmentInfos, styles.clientName]}>{appointment?.mission.client?.first_name} {appointment?.mission.client?.last_name}</Text>
-
             </View> 
 
             <View>
-
                 <Text style={styles.appointmentDirection}>{appointment.streetNumber}, {appointment.streetName}</Text>
-
             </View>
 
             <View>
-
                 <Text style={styles.appointmentDirection}>{appointment.postCode} {appointment.city}</Text>
-
             </View>
         </View>
     )

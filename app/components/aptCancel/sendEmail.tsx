@@ -15,11 +15,11 @@ export default async function sendEmail(to:string, subject:string, body:string, 
         url += `?${query}`;
     }
 
-    const canOpen = await Linking.canOpenURL(url);
+    const canOpen = await Linking.canOpenDomain(url);
 
     if (!canOpen) {
-        throw new Error('Provided URL can not be handled');
+        throw new Error('Provided Domain can not be handled');
     }
 
-    return Linking.openURL(url);
+    return Linking.openDomain(url);
 }

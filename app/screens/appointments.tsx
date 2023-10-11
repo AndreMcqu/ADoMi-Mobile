@@ -3,63 +3,52 @@ import { AppointmentType } from "../types/componentTypes";
 import AllAppointments from "../components/appointmentComponents/allAppointments";
 import DisplayModal from "../components/appointmentComponents/appointmentModal"
 import type { StackScreenProps } from '@react-navigation/stack';
-import type { CalendarStackParamList } from '../router/StackNavCalendar';
+import type { HomeStackParamList } from '../router/StackNavHome';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import 'moment/locale/fr';
-import NGROK from "../../ngrok/ngrokUrl";
+import { getAppointments } from "../apiCalls";
+import { useSelector, useDispatch } from 'react-redux'
+import type { RootState } from '../redux/store'
 
-type props = StackScreenProps<CalendarStackParamList, 'Appointment'>
+
+type props = StackScreenProps<HomeStackParamList, 'Appointments'>
 
 
 export default function Appointments({route, navigation}:props){
 
     // const carerId = route.params.carerId
-    //appointmentData contiendra toutes les données appointments d'un carer
-    const [appointmentData, setAppointmentInfo] = useState<AppointmentType[]>();
+    //appointments contiendra toutes les données appointments d'un carer
+    const [appointments, setAppointments] = useState<AppointmentType[]>();
 
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
     //On stock toutes les infos d'un appointment spécifique dans selectedAppointment
     const [selectedAppointment, setselectedAppointment] = useState<AppointmentType>();
 
-    //url en dur pour effectuer des tests
-    const url = 'https://'+NGROK+"/carers/3/appointments"
+    const token = useSelector((state: RootState) => state.token.token)
+    const userId = useSelector((state: RootState) => state.user.id)
 
-    const fetchAppointmentInfo = ()=>{
-
-        axios.get(url)
-        .then((response) =>{
-            const data = response.data;
-            setAppointmentInfo(data);
-            
-        })
-        .catch(error => console.log('erreur d\'Axios sur appointments'))
-    }
 
     // fetch des données appointment
-    useEffect(()=>{
-        fetchAppointmentInfo()
-    }, []);
+    useEffect(() => {
+        getAppointments(userId, token)
+            .then((appts) => appts && setAppointments(appts))
+    }, [])
 
     const onModalOpen = (item:AppointmentType)=>{
-
         setselectedAppointment(item)
         setIsModalVisible(true)
     }
 
     const onModalClose = ()=>{
-
         setIsModalVisible(false);
-
     }
 
     const cancelAppointment = ()=>{
-
-        navigation.navigate('AppointmentCancel', {carerId: 3});
+        //navigation.navigate('AppointmentCancel', {carerId: 3});
         setIsModalVisible(false);
-
     };
     
     //Conversion des dates et heures au format fr
@@ -67,31 +56,22 @@ export default function Appointments({route, navigation}:props){
     const startHour = moment(selectedAppointment?.startHour, "HH:mm:ss");
     const endHour = moment(selectedAppointment?.endHour, "HH:mm:ss");
 
-    if(appointmentData?.length === 0){
+    if (!appointments?.length){
 
         return(
-
             <View style={styles.appointmentContainer}>
-        
                 <View style={styles.subContainer}>
-
                     <Text style={styles.title}>A Do Mi</Text>
-
                     <Text style={styles.subtitle}>Vous n'avez aucun rendez-vous</Text>
-                    
                 </View>
-
             </View>
-
         )
 
     }
-    else{
 
+    else {
         return(
-
             <View style={styles.appointmentContainer}>
-    
                 <View style={styles.subContainer}>
     
                     <Text style={styles.title}>A Do Mi</Text>
@@ -99,8 +79,7 @@ export default function Appointments({route, navigation}:props){
                     <Text style={styles.subtitle}>Vos rendez-vous :</Text>
     
                     <FlatList 
-    
-                        data={appointmentData}
+                        data={appointments}
                         renderItem={({item}) => <Pressable onPress={()=>onModalOpen(item)} key={item.id}>
                                                     <AllAppointments {...item}/>
                                                 </Pressable>
@@ -110,7 +89,6 @@ export default function Appointments({route, navigation}:props){
                     <DisplayModal isVisible={isModalVisible} onClose={onModalClose} id={selectedAppointment?.id} idMission={selectedAppointment?.idMission} date={appointmentDate} startHour={startHour.format("HH") + "H" + startHour.format("mm")} endHour={endHour.format("HH") + "H" + endHour.format("mm")} streetName={selectedAppointment?.streetName} streetNumber={selectedAppointment?.streetNumber} postCode={selectedAppointment?.postCode} city={selectedAppointment?.city} client={selectedAppointment?.mission.client} cancelFunction={cancelAppointment}/>
                 </View>
                 <View style={styles.bottomLine}/>
-        
             </View>
         )
 
