@@ -34,7 +34,12 @@ export default function Appointments({route, navigation}:props){
     // fetch des données appointment
     useEffect(() => {
         getAppointments(userId, token)
-            .then((appts) => appts && setAppointments(appts))
+        .then((appts: AppointmentType[]) => {
+                let todayIndex = appts.reverse().findIndex((a) => new Date(a.date) >= new Date())
+                appts = appts.slice(todayIndex)
+                setAppointments(appts)
+        })
+        .catch((err) => console.log("erreur à getAppointments dans Appointments ", err))
     }, [])
 
     const onModalOpen = (item:AppointmentType)=>{

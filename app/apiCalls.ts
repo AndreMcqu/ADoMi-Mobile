@@ -59,11 +59,10 @@ export async function getAppointments (id: string, token: string) {
 
     const json = await response.json()
     if (!response.ok) {
-        console.error("bad HTTP status code at fetchLatestAppointments\n", json)
+        console.error("bad HTTP status code at getAppointments\n", json)
         return false
     }
 
-    console.log("all appointments : ", json)
     return json
 }
 

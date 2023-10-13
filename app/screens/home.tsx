@@ -14,20 +14,22 @@ type props = StackScreenProps<HomeStackParamList, "Home">
 
 export default function Home({ route, navigation }: props) {
 
-    // const carerId = route.params.carerId;
     const [appointmentData, setAppointmentData] = useState<AppointmentType[]>([]);
     const token = useSelector((state: RootState) => state.token.token)
     const userId = useSelector((state: RootState) => state.user.id)
 
     const fetchAppts = () => getAppointments(userId, token)
-    .then((appts) => { if (appts) setAppointmentData(appts) })
-    .catch((err) => console.log("erreur à fetchAppts dans Home ", err))
+    .then((appts: AppointmentType[]) => { 
+            let todayIndex = appts.reverse().findIndex((a) => new Date(a.date) >= new Date())
+            appts = appts.slice(todayIndex)
+            setAppointmentData(appts)
+    })
 
     useEffect(() => {
             fetchAppts()
             const i = setInterval(() => {
                 fetchAppts()
-            }, 60000)
+            }, 30000)
         return () => clearInterval(i)
     }, [])
 
@@ -57,25 +59,21 @@ export default function Home({ route, navigation }: props) {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>A Do Mi</Text>
-
             <Text style={styles.subtitle}>Prochains rendez-vous :</Text>
 
             <FlatList
                 data={appointmentData}
                 renderItem={({ item }) =>
-                    <View key={item.id}>
-                        <NextAppointments {...item} />
-                    </View>
+                        <NextAppointments key={item.id} {...item} />
                 }
             />
-            {/* <View style={styles.buttonsContainer}> */}
+
             <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate('Appointments', { carerId: 3 })}>
                 <Text style={styles.apptButtonText}>Voir tous les rendez-vous</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate("calendar", { carerId: 3 })}>
+            <TouchableOpacity style={[styles.apptButton, {marginTop: 3, marginBottom: 11}]} onPress={() => navigation.navigate("calendar", { carerId: 3 })}>
                 <Text style={styles.apptButtonText}>Consulter le calendrier</Text>
             </TouchableOpacity>
-            {/* </View> */}
 
         </SafeAreaView>
     )
@@ -94,24 +92,25 @@ const styles = StyleSheet.create({
     test: {
         borderWidth: 1,
         borderColor: "black"
-
     },
     title: {
         color: 'black',
         fontSize: 30,
         fontWeight: '500',
+        marginTop: 14,
+        marginBottom: 5,
+    },
+    subtitle: {
+        fontSize: 21,
+        marginBottom: 22,
+        textAlign: "center",
     },
     appointmentSection: {
         width: "80%",
         marginTop: 25,
     },
-    subtitle: {
-        fontSize: 21,
-        marginBottom: 20,
-        textAlign: "center"
-    },
     buttonsContainer: {
-        marginBottom: 20
+        marginTop: 0
     },
     apptButton: {
         backgroundColor: "#FFC0CB",
@@ -119,8 +118,8 @@ const styles = StyleSheet.create({
         padding: 17,
         alignSelf: 'center',
         borderRadius: 5.5,
-        marginTop: 10,
-        marginBottom: 10
+        marginTop: 5,
+        marginBottom: 7
     },
     apptButtonText: {
         fontSize: 15,

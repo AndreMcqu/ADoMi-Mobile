@@ -16,11 +16,10 @@ export default function nextAppointments(appointment: AppointmentType){
 
             <View style={styles.mainInfos}>
                 <Text  style={styles.appointmentInfos}>{appointmentDate}</Text>
-                <View style={styles.appointmentTime}>
 
+                <View style={styles.appointmentTime}>
                     <Text style={styles.appointmentInfos}>
-                    {startHour.format("HH")}h{startHour.format("mm")}
-                        
+                        {startHour.format("HH")}h{startHour.format("mm")}
                     </Text>
                     <FontAwesome
                             name="arrow-right"
@@ -28,12 +27,11 @@ export default function nextAppointments(appointment: AppointmentType){
                             color="black"
                             style={styles.arrowIcon}
                         />
-
                     <Text style={styles.appointmentInfos}>
-                    {endHour.format("HH")}h{endHour.format("mm")}
+                        {endHour.format("HH")}h{endHour.format("mm")}
                     </Text>
-
                 </View>
+
                 <Text style={[styles.appointmentInfos, styles.clientName]}>{appointment?.mission.client?.first_name} {appointment?.mission.client?.last_name}</Text>
             </View> 
 
@@ -59,7 +57,8 @@ const styles = StyleSheet.create({
     mainInfos:{
         justifyContent:"center",
         alignItems: "center",
-        marginBottom:20
+        marginBottom: 17,
+        marginTop: -5,
     },
     arrowIcon:{
         marginTop:10,

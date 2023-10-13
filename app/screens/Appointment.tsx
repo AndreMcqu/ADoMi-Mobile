@@ -38,7 +38,6 @@ export default function LoneAppointment ({route, navigation}: props) {
     const recurences = ['hebdomadaire', 'mensuel', 'bi-mensuel']
 
 
-    console.warn(mission)
     
     return (
     <ScrollView style={s.container} contentContainerStyle={{alignItems: 'center',}}>
@@ -110,7 +109,7 @@ const s = StyleSheet.create({
         width: 215,
         padding: 14,
         alignSelf: 'center',
-        marginVertical: 12,
+        marginVertical: 10,
         borderRadius: 8
     },
     apptButtonText: {
@@ -176,7 +175,7 @@ const s = StyleSheet.create({
         paddingTop: 12,
         paddingBottom: 30,
         paddingHorizontal: 35,
-        marginBottom: 21,
+        marginBottom: 20,
         width: windowWidth * 0.87
     }
 })
