@@ -18,29 +18,17 @@ export default function AppointmentCancel ({navigation, route}: props){
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!user){
-            getUserInfo(id, token)
-            .then(json => dispatch(newUser(json)))
-            .catch(err => console.log(err))
-        }
+        if (!user) getUserInfo(id, token).then(json => dispatch(newUser(json))).catch(err => console.log(err))
     }, [])
 
-    // async function callAPI() {
-    //     try {
-    //       const response = await axios.get('https://4ef8-31-32-43-205.ngrok-free.app/test');
-    //       console.log(response.data);
-    //       return response.data
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    // }
-
     let appt = route.params.appointment
+    let type = route.params.type
+    let title = (type == 'simple_message') ? 'Envoyer un message à l\'agence' : 'Communiquer une indisponibilité'
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Communiquer une indisponibilité</Text>
-            <FormulaireAppointment appt={appt} user={user}></FormulaireAppointment>
+            <Text style={styles.title}> {title} </Text>
+            <FormulaireAppointment appt={appt} user={user} type={type}></FormulaireAppointment>
         </View>
     )
 }
@@ -48,7 +36,7 @@ export default function AppointmentCancel ({navigation, route}: props){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'lightskyblue',
+        backgroundColor: '#9EDEF3',
         alignItems: 'center',
         paddingTop: 70,
         

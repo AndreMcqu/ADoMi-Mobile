@@ -14,7 +14,7 @@ export default async function sendEmail(to:string, subject:string, body:string, 
     if(query.length){
         url += `?${query}`;
     }
-
+/*
     const canOpen = await Linking.canOpenDomain(url);
 
     if (!canOpen) {
@@ -22,4 +22,5 @@ export default async function sendEmail(to:string, subject:string, body:string, 
     }
 
     return Linking.openDomain(url);
+    */
 }

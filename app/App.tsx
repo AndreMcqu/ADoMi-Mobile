@@ -10,9 +10,6 @@ moment.locale('fr')
 
 function CheckLogin() {
   const token = useSelector((state: RootState) => state.token.token)
-  const user = useSelector((state: RootState) => state.user.info)
-  const userId = useSelector((state: RootState) => state.user.id)
-
 
   return (
       token && token.length > 0

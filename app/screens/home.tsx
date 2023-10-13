@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, FlatList, Pressable, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
-import { fetchLatestAppointments } from '../apiCalls'
+import { fetchLatestAppointments, getAppointments } from '../apiCalls'
 import {Scheme, Domain} from '../../env/api_conn';
 import { useState, useEffect } from "react";
 import { AppointmentType } from '../types/componentTypes';
@@ -19,13 +19,15 @@ export default function Home({ route, navigation }: props) {
     const token = useSelector((state: RootState) => state.token.token)
     const userId = useSelector((state: RootState) => state.user.id)
 
-    const fetchAppts = () => fetchLatestAppointments(userId, token).then((appts) => appts && setAppointmentData(appts) )
+    const fetchAppts = () => getAppointments(userId, token)
+    .then((appts) => { if (appts) setAppointmentData(appts) })
+    .catch((err) => console.log("erreur à fetchAppts dans Home ", err))
 
     useEffect(() => {
             fetchAppts()
             const i = setInterval(() => {
                 fetchAppts()
-            }, 10000)
+            }, 60000)
         return () => clearInterval(i)
     }, [])
 
@@ -43,7 +45,7 @@ export default function Home({ route, navigation }: props) {
                         <Text style={styles.apptButtonText}>Voir tous les rendez-vous</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate("Calendar", { carerId: 3 })}>
+                    <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate("calendar", { carerId: 3 })}>
                         <Text style={styles.apptButtonText}>Consulter le calendrier</Text>
                     </TouchableOpacity>
                 </View>
@@ -70,7 +72,7 @@ export default function Home({ route, navigation }: props) {
             <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate('Appointments', { carerId: 3 })}>
                 <Text style={styles.apptButtonText}>Voir tous les rendez-vous</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate("Calendar", { carerId: 3 })}>
+            <TouchableOpacity style={styles.apptButton} onPress={() => navigation.navigate("calendar", { carerId: 3 })}>
                 <Text style={styles.apptButtonText}>Consulter le calendrier</Text>
             </TouchableOpacity>
             {/* </View> */}

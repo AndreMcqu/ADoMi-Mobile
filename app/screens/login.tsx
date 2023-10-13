@@ -11,7 +11,7 @@ export default function Login() {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [authError, setAuthError] = useState<string>('')
-    const token = useSelector((state: RootState) => state.token.token)
+    //const token = useSelector((state: RootState) => state.token.token)
     const dispatch = useDispatch()
 
     const handleSignIn = () => {

@@ -1,9 +1,18 @@
 export type Client = {
-    first_name?: string
-    last_name?: string
+    id?: string
+    first_name:string;
+    last_name:string;
+    email:string;
+    user_name:string;
+    phone:string;
+    street_name:string;
+    street_number:string;
+    post_code: string;
+    city:string;
 }
 
 export type Carer = {
+    id?: string
     first_name:string;
     last_name:string;
     email:string;
@@ -52,3 +61,5 @@ export type AppointmentProps = {
     client?: Client;
     cancelFunction?: any;
 }
+
+

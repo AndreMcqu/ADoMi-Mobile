@@ -61,7 +61,7 @@ const getApptsOfTheDay = (date: string, appts: AppointmentType []): AppointmentT
     })
     return dayAppts
 }
-
+ 
 /* Main Component */ 
 export default function MyCalendar ({navigation, route}: props ) {
   const [appointments, setAppointments] = useState<AppointmentType[]>([])
@@ -81,6 +81,7 @@ export default function MyCalendar ({navigation, route}: props ) {
         setModalDisplay(true)
       }
   }
+
 
   useEffect(() => {
       getAppointments(id, token)
@@ -128,10 +129,10 @@ export default function MyCalendar ({navigation, route}: props ) {
                 </View>
 
                 <View style={{flexDirection: 'row', justifyContent: 'space-evenly', marginTop: -58}}>
-                    <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('AppointmentCancel', {carerId: 3, appointment: dayAppts[apptCount]})}>
+                    <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('AppointmentCancel', {carerId: 3, type:'cancel', appointment: dayAppts[apptCount]})}>
                         <Text style={s.apptButtonText}>Annuler ce rdv</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Appointment', {carerId: 3, appointmentId: dayAppts[apptCount].id! })}>
+                    <TouchableOpacity style={s.apptButton} onPress={() => navigation.navigate('Appointment', { carerId: 3, appointmentInfo: dayAppts[apptCount] })}>
                         <Text style={s.apptButtonText}>Détails rdv</Text>
                     </TouchableOpacity>
                 </View>

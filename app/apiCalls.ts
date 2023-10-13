@@ -50,7 +50,7 @@ export async function getAppointments (id: string, token: string) {
             headers: { ...authHeader(token) }
         })
         .catch((err) => 
-            console.error("HTTP err at fetchLatestAppointments\n", err)
+            console.error("HTTP err at getAppointments\n", err)
         )
     
     if (!response) {
@@ -95,7 +95,6 @@ export async function fetchLatestAppointments(userId: string, token: string): Pr
 export async function signIn (username: string, password: string)  {
     // username: marie.Ddoupeter
     // password: Mdp1234*
-
     const res = await fetch(Scheme + Domain + "/sign-in", {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -103,24 +102,42 @@ export async function signIn (username: string, password: string)  {
             username: username,
             password: password
         }),
-        //signal: AbortSignal.timeout(5000)
     })
     .catch(err => {
         console.error("fetch err in sign-in", err)
     })
 
-    if (!res) {
-        return Promise.reject("Une erreur inconnue est survenue")
-    }
+    if (!res) return Promise.reject("Une erreur inconnue est survenue")
 
     const json = await res.json()
 
     if (!res.ok) {
-        if (res.status === 401) {
-            return Promise.reject(json.message)
-        }
+        if (res.status === 401) return Promise.reject(json.message)
         return Promise.reject("Une erreur inconnue est survenue")
     }
 
     return json
 }
+
+export async function postGeneralRequest (carerId: string, token: string, message: string) {
+   const res = await fetch(Scheme + Domain + "/users/"+carerId+"/general-request", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...authHeader(token)
+        },
+        body: JSON.stringify({
+            message: message,
+        })
+    }).catch(err => {
+        console.error("fetch errored in postGeneralRequest", err)
+    })
+
+
+    if (!res) return Promise.reject("Une erreur inconnue est survenue")
+    if (!res.ok) return Promise.reject("Une erreur inconnue est survenue")
+    console.log("res.status ", res.status)
+
+    return Promise.resolve("Le message a bien été envoyé.")
+}
+
